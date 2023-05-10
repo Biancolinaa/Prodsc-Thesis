@@ -1,0 +1,33 @@
+\documentclass[italian,master]{unibg}
+
+\title{A Seclab Thesis}
+\subtitle{A Seclab Subtitle}
+\advisor{Chiar.mo Prof.~John Smith}
+% \coadvisor{Chiar.mo Prof.~Ed Smith}
+
+\department{Ingegneria Gestionale, dell'Informazione e della Produzione}
+\course{Ingegneria Informatica}
+\class{LM-32}
+
+\author{John Doe}
+\studentid{177013}
+\year{2021/2022}
+
+\begin{document}
+\maketitle
+\emptypage
+\input{pages/abstract.tex}
+\emptypage
+\toc
+\emptypage
+
+\clearpage
+\pagenumbering{arabic}
+
+\input{chapters/chap01.tex}
+\input{chapters/chap02.tex}
+
+\nocite{*}
+\printbibliography[heading=bibintoc]
+
+\end{document}
