@@ -1,0 +1,60 @@
+\chapter{Introduzione}
+\section{Obiettivi del progetto}
+%Scrivi qualcosa
+
+\section{Contesto}
+%scrivi
+
+\section{Modellizzazioni}
+L'analisi del problema ha permesso di individuare quattro entità fondamentali:
+
+\begin{itemize}
+    \item \textbf{Conference}: rappresenta la conferenza a cui viene sottoposto il paper. Gli attributi rilevanti sono:
+    \begin{itemize}
+        \item Name: nome della conferenza;
+        \item Acronym: acronimo della conferenza;
+        \item GGS Rating: valutazione di una conferenza. Una conferenza può essere valutata secondo la seguente tabella:
+        \begin{center}
+            \begin{tabular}{||c c ||} 
+             \hline
+             Classe & Descrizione \\ [0.5ex] 
+             \hline\hline
+             A++, A+ & Conferenze di alto livello \\ 
+             \hline
+             A, A- & Conferenze di alta qualità \\
+             \hline
+             B, B- & Conferenze di buona qualità \\ [1ex] 
+             \hline
+            \end{tabular}
+        \end{center}
+        \item Num. Papers: numero di papers accettati dalla conferenza;
+        \item Num. Citations: numero di citazioni di tutti i paper della conferenza.
+    \end{itemize}
+
+    \item \textbf{Affiliation}: rappresenta l'università per cui l'autore ha fatto ricerca. Gli attributi rilevanti sono:
+    \begin{itemize}
+        \item Name: nome dell'università;
+        \item State: stato dell'università;
+        \item Country: nazione dell'università;
+        \item Author count: numero degli autori che pubblicano per l'università;
+        \item Document count: numero di documenti pubblicati dall'università.
+    \end{itemize}
+
+    \item \textbf{Paper}: rappresenta il paper portato alla conferenza. Gli attributi rilevanti sono:
+    \begin{itemize}
+        \item Title: titolo del paper;
+        \item Year: anno di pubblicazione del paper;
+        \item Source Title: titolo della conferenza a cui il paper è stato sottomesso;
+        \item Cited by: numero di volte in cui il paper è stato citato;
+        \item DOI.
+    \end{itemize}
+
+    \item \textbf{Author}: autore del paper. Gli attributi rilevanti sono:
+    \begin{itemize}
+        \item Surname: cognome dell'autore;
+        \item Name: nome dell'autore;
+        \item Citation count: numero di citazioni dell'autore;
+        \item Cited by count: da chi è stato citato l'autore;
+        \item H index.
+    \end{itemize}
+\end{itemize}
