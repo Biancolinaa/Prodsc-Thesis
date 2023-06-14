@@ -1,7 +1,254 @@
 \chapter{Implementazione}
+
+%%%% STRUMENTI %%%%%
 \section{Strumenti}
 
+I dati che sono stati analizzati in questo progetto di tesi sono stati scaricati dal database di Scopus utilizzando le API che il sito 
+mette a disposizione.
 
-\section{Views e metriche}
+Per implementare la dashboard e le varie pagine che mostrano i risultati delle interrogazioni ho utilizzato Python come 
+linguaggio di programmazione, il framework Django e SQLite come database.
+
+
+%%%% SCOPUS API %%%%%
+\subsection{Scopus API}
+Scopus permette di accedere a circa 78 milioni di articoli, riviste scientifiche, libri e pubblicazioni.
+Le API di Scopus permettono di visualizzare abstract e dati riguardanti il numero di citazioni di tutte le riviste accademiche
+indicizzate da Scopus. 
+
+Sono disponibili due modi di utilizzo delle API di Scopus: commerciale e non commerciale. Per questa tesi sono state utilizzate le API a uso 
+non commerciale, disponibili gratuitamente per lavori swnza scopo di lucro.
+
+Utilizzando le API di Scopus, si ha accesso diretto ai dati di Scopus in tempo reale, le \textit{API responses} includono link a risorse collegate, rendendo
+la navigazione più semplice e la documentazione consente di visualizzare in anteprima la richiesta e la risposta della API in modo interattivo.
+Inoltre l'architettura RESTful permette di avere vantaggi di scalabilità, portabilità e affidabilità.
+
+Le API scopus permettono di scaricare i dati quando si è connessi ad una rete di un ateneo riconosciuto da Scopus e fino ad un massimo di 5000 dati a settimana 
+per ogni API.
+
+%%%% SCOPUS SEARCH %%%%%
+
+\subsubsection{Scopus Search API}
+Per il download dei dati riguardanti i paper, gli autori e gli atenei universitari, sono state utilizzate le API Scopus Search. Ogni risultato di ricerca 
+è collegato ad un abstract di Scopus oppure ad un link a tutto il testo dell'articolo. 
+
+Questa API utilizza la sintassi booleana che consente agli utenti di combinare parole chiave attraverso gli operatori AND, OR e NOT, per poter produrre risultati 
+più rilevanti. La ricerca booleana viene inviata tramite il parametro \textit{query} della \textit{query string} e il contenuto della ricerca inviata deve essere 
+codificato nell'URL.
+
+\subsubsection{pybliometrics}
+\texttt{pybliometrics} è una libreria di Python che serve per estrarre e memorizzare nella cache i dati dal database Scopus. 
+
+Le classi utilizzate sono le seguenti:
+\begin{itemize}
+  \item \texttt{AbstractRetrieval}: implementa l'API Abstract Retrieval di Scopus che consente di estrarre informazioni riguardo gli articoli 
+  a diversa profondità tramite viste;
+  \item \texttt{AffiliationRetrieval}: implementa l'API Affiliation Retrieval di Scopus che fornisce informazioni riguardo gli atenei registrati, come per esempio 
+  città, paese e membri;
+  \item \texttt{AuthorRetrieval}: implementa l'API Author Retrieval di Scopus che contiene tutte le informazioni riguardanti un autore;
+  \item \texttt{ScopusSearch} implementa l'API di ricerca di Scopus, esegue una query per cercare documenti e quindi recupera i record della query.
+  \end {itemize}
+
+Nella sezione \ref{download} verrà mostrato l'utilizzo di pybliometrics e delle classi.
+
+%%%% DJANGO %%%%%
+\subsection{Django}
+
+Django è un \textit{web framework} basato su Python che aiuta lo sviluppo di siti web basati su database, è open source e permette di 
+concentrarsi sullo sviluppo dell'applicazione.
+
+Ha una propria nomenclatura per le viste delle risposte HTTP e si basa sull'architettura MVC: 
+\begin{itemize}
+  \item \textit{Model}: il \textit{Object-Relational Mapper} media tra le classi Python che rappresentano i modelli di dati 
+  e il database relazionale;
+  \item \textit{View}: il sistema che processa le richieste HTTP media con un sistema di template;
+  \item \textit{Controller}: un dispatcher URL basato su espressioni regolari.
+\end{itemize}
+
+
+
+%%% DOWNOLAD DEI DATI %%%%
+\section{Download dei dati}
+\label{download}
+
+Di seguito verrà illustrato il procedimento per il download dei dati utilizzati per costruire la base di dati. A titolo di esempio verrà mostrato il codice 
+per scaricare i file \texttt{.csv} contenenti le informazioni sui paper. 
+
+\subsection{Affiliations}
+Come precedentemente detto, per scaricare i dati riguardanti le università, viene utilizzata la classe \texttt{AffiliationRetrieval()} per l'interazione 
+con l'API scopus, la cui sintassi base è:
+\begin{lstlisting}
+  class pybliometrics.scopus.AffiliationRetrieval(aff_id, 
+      refresh=False, view='STANDARD', **kwds)
+\end{lstlisting}
+
+dove:
+\begin{itemize}
+  \item \texttt{aff\_id}: id Scopus dell'università;
+  \item \texttt{refresh}: indica se aggiornare il file memorizzato nella cache;
+  \item \texttt{view}: visualizzazione del file da scaricare;
+  \item \texttt{kwds}: parole chiave trasmesse come parametetri alla query.
+\end{itemize}
+
+I dati filtrati sono:
+\begin{itemize}
+  \item \texttt{aff\_id}
+  \item \texttt{affiliation\_name}: nome dell'università;
+  \item \texttt{state}: stato dell'università. Richiede la view STANDARD;
+  \item \texttt{country}: nazione dell'università;
+  \item \texttt{author\_count}: numero di autori associati all'università;
+  \item \texttt{document\_count}: numero di documenti per l'università.
+\end{itemize}
+
+\subsection{Author}
+Per prelevare i dati che riguardano gli autori viene utilizzata la classe \texttt{AuthorRetrieval()} che implementa l'API Scopus associata e contiene il record 
+dell'autore. 
+
+La sintassi base è:
+\begin{lstlisting}
+  class pybliometrics.scopus.AuthorRetrieval(author_id, 
+      refresh=False, view='ENHANCED', **kwds)
+\end{lstlisting}
+
+dove:
+\begin{itemize}
+  \item \texttt{author\_id}: id dell'autore;
+  \item \texttt{refresh}: indica se aggiornare il file memorizzato nella cache;
+  \item \texttt{view}: visualizzazione del file da scaricare. In questo caso vengono incluse tutte le informazioni della vista;
+  \item \texttt{kwds}: parole chiave trasmesse come parametetri alla query.
+\end{itemize}
+
+I dati filtrati sono:
+\begin{itemize}
+  \item \texttt{author\_id};
+  \item \texttt{surname};
+  \item \texttt{name};
+  \item \texttt{citation\_count}: numero totale di elementi citati;
+  \item \texttt{cited\_by\_count}: numero totale di autori citanti;
+  \item \texttt{h\_index}: h-index dell'autore.
+\end{itemize}
+
+\subsection{Conferences}
+I dati sui rating delle conferenze non sono stati scaricati da Scopus ma da (METTERE RIFERIMENTO ALLA BIO) che raccoglie le principali conferenze con rating compreso
+tra A++ e B-.
+
+I dati filtrati sono:
+\begin{itemize}
+  \item \texttt{title}: nome della conferenza;
+  \item \texttt{acronym};
+  \item \texttt{GGS Rating};
+  \item \texttt{MA-Max. Num. of Papers}: numero di paper accettati dalla conferenza;
+  \item \texttt{MA-Max. Citations}: numero di citazioni;
+\end{itemize}
+
+\subsection{Papers}
+Per prelevare i dati riguardanti i papers viene utilizzata la classe \texttt{AbstractRetrieval()} che implementa l'API Scopus associata e permette una visualizzazione 
+a differenti livelli delle informazioni.
+
+La sintassi base è:
+\begin{lstlisting}
+  class pybliometrics.scopus.AbstractRetrieval(identifier=None, 
+      refresh=False, view='META_ABS', id_type=None, **kwds)
+\end{lstlisting}
+
+dove:
+\begin{itemize}
+  \item \texttt{identifier}: id di un documento;
+  \item \texttt{refresh}: indica se aggiornare il file memorizzato nella cache;
+  \item \texttt{view}: visualizzazione del file da scaricare. In questo caso vengono incluse tutte le informazioni della vista;
+  \item \texttt{id\_type}: tipo di id che è stato utilizzato per la ricerca;
+  \item \texttt{kwds}: parole chiave trasmesse come parametetri alla query.
+\end{itemize}
+
+I dati filtrati sono:
+\begin{itemize}
+  \item \texttt{id};
+  \item \texttt{Authors}: lista di autori del paper;
+  \item \texttt{Author(s) id};
+  \item \texttt{Title};
+  \item \texttt{Year};
+  \item \texttt{Source title}: abbreviazione della conferenza a cui è stato pubblicato il documento. Richiede la visualizzazione FULL dell'articolo;
+  \item \texttt{confcode}: codice della conferenza a cui il paper è stato sottoposto;
+\end{itemize}
+
+I dati dei paper e delle conferenze provengono da database differenti quindi non c'era corrispondenza tra le conferenze registrate in Scopus e quelle raccolte da GII, 
+GRIN e SCIE. Per creare un database omogeneo si è optato per scorrere tutti i paper e confrontare i \texttt{Source title} con i \texttt{title} delle conferenze, 
+utilizzando la \textit{distanza di Levenshtein} nel confronto. 
+
+\subsubsection{Distanza di Levenshtein}
+L'algoritmo di Levenshtein calcola la somiglianza tra due stringhe diverse. Date due stringhe A e B, l'algoritmo misura il numero di modifiche elementari necessarie 
+per trasformare la stringa A nella stringa B. 
+
+Tra le operazioni elementari si hanno: eliminazione di un carattere, sostituzione di un carattere con un altro, inserimento di un nuovo carattere.
+
+Per il calcolo, viene utilizzata l'estensione Levenshtein di Python.
+
+Il codice per il confronto è il seguente:
+
+\begin{lstlisting}[language=Python]
+  papers = pd.read_csv('./papers/full-with-conf-id.csv')
+  confs = pd.read_csv('../conferenze/output.csv')
+  
+  cache = {}
+  totp = len(papers)
+  totc = len(confs)
+
+  try:
+      for i in range(totp):
+          if papers['confid'][i] != 'TODO':
+              print('Already done')
+              os.system('clear')
+              continue
+
+          confname = papers['confname'][i]
+          if confname in cache:
+              print(f'Using {cache[confname]}')
+          else:
+              print(f'Doing "{confname}"')
+              lst = []
+              for j in range(totc):
+                  code = confs['acronym'][j]
+                  title = confs['title'][j]
+                  id = confs['id'][j]
+                  if code in confname:
+                      lst.append((0, id, title, code))
+                  else:
+                      d = distance(title.lower(), confname.lower())
+                      lst.append((d, id, title, code))
+              lst = sorted(lst, key=lambda t: t[0])
+              for index, (d, id, title, code) in enumerate(lst[:30]):
+                  print(f'{index} --- {d} {id} "{title}" ({code})')
+  
+              choice = input('Best: ')
+              if choice == '':
+                  id = lst[0][1]
+              elif choice == 'pass':
+                  id = '-'
+              elif choice == 'custom':
+                  id = input('Custom id: ')
+                  id = int(id)
+              else:
+                  id = lst[int(choice)][1]
+  
+              cache[confname] = id
+              print()
+  
+          # save
+          confname = papers['confname'][i]
+          id = cache[confname]
+          papers['confid'][i] = id
+          os.system('clear')
+  
+          if i % 5 == 0:
+              print('Saving')
+              papers.to_csv('./papers/full-with-conf-id.csv', index=False)
+  finally:
+      print('Saving')
+      papers.to_csv('./papers/full-with-conf-id.csv', index=False)
+\end{lstlisting}
+
+
+
+\section{Implementazione di views e metriche}
 
 
