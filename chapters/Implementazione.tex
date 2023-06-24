@@ -2,7 +2,28 @@
 
 \section{Descrizione del progetto}
 
-\todo{Una descrizione del progetto, con la separazione in fasi}
+% \todo{Una descrizione del progetto, con la separazione in fasi}
+Il progetto si pone l'obiettivo di raccogliere una quantità rappresentativa
+di paper, autori e conferenze degli ultimi anni al fine di derivare alcune
+correlazioni fra le principali metriche, quali l'H-index, la qualità delle
+conferenze ed il numero delle citazioni.
+
+Il lavoro si suddivide principalmente nelle seguenti fasi:
+\begin{enumerate}
+  \item Modellazione dei dati inerenti al problema;
+  \item Raccolta e organizzazione dei dati da varie fonti, quali Scopus e GGS;
+  \item Integrazione dei dati in un unico modello al fine di creare un database unificato;
+  \item Sviluppo di un'applicazione web in Django per la visualizzazione delle varie metriche.
+\end{enumerate}
+
+Oltre agli indici direttamente disponibili (e.g., H-index, citazioni, qualità
+delle conferenze), sono state derivate alcune metriche per via campionaria.
+Esse sono:
+\begin{itemize}
+  \item La distribuzione della qualità delle conferenze analizzate;
+  \item La correlazione tra qualità delle conferenze e distribuzione del numero delle citazioni dei paper;
+  \item \todo{Aggiungere le altre}.
+\end{itemize}
 
 %%%% STRUMENTI %%%%%
 \section{Strumenti}
@@ -130,6 +151,48 @@ def author_info(request, author_id):
                   {"author": author, "num_confs": num_confs})
 \end{lstlisting}
 
+Infine, un \textit{Template} di Django è semplicemente un file HTML che
+viene interpretato come codice DTL al momento della costruzione della risposta
+inviata dal server al client che ha effettuato la richiesta. Un esempio di tale
+template è visibile nel Listing~\ref{lst:django-template}.
+
+\begin{lstlisting}[language=HTML, caption=Template per l'elenco delle conferenze,label=lst:django-template]
+{% extends "base.html" %}
+
+{% block title %}
+Conferences - Produzione Scientifica
+{% endblock title %}
+
+{% block content %}
+<h1>List of Conferences</h1>
+
+<img src="{% url 'conferences_distribution.png' %}" />
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Acronym</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for conference in conferences %}
+    <tr>
+      <td>
+        <a href="">{{ conference.name }}</a>
+      </td>
+      <td>{{ conference.acronym }}</td>
+      <td>{{ conference.ggs_rating }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}
+\end{lstlisting}
+
+\todo{Descrivere l'organizzazione delle rotte in Django ed il flusso delle richieste.}
+
 \section{Ottenimento dei dati}
 
 Come già anticipato in Sezione~\ref{sec:scopus}, la maggior parte dei dati è
@@ -252,4 +315,18 @@ Un paper viene rappresentato dai seguenti dati:
 
 % \section{Implementazione di views e metriche}
 
+\section{Applicazione web}
 
+\subsection{Struttura dei file}
+
+\todo{Descrivere la separazione data da Django nei file e nel codice}
+
+\subsection{Calcolo delle metriche}
+
+\todo{Descrivere come le immagini delle metriche sono ottenute}
+
+\section{Metriche e correlazioni}\label{sec:metriche-correlazioni}
+
+\subsection{Distribuzione delle conferenze}
+
+\subsection{Correlazione tra qualità delle conferenze e distribuzione delle citazioni}
