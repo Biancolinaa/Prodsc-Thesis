@@ -2,3 +2,17 @@ dist/*
 
 # Uncomment this if you want to keep the pdf
 # !dist/*.pdf
+
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.fdb_latex
+*.fls
+*.log
+*.out
+*.pdf
+*.run.xml
+*.synctex.gz
+*.toc
+.DS_Store

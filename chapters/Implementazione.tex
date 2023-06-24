@@ -1,254 +1,255 @@
 \chapter{Implementazione}
 
+\section{Descrizione del progetto}
+
+\todo{Una descrizione del progetto, con la separazione in fasi}
+
 %%%% STRUMENTI %%%%%
 \section{Strumenti}
 
-I dati che sono stati analizzati in questo progetto di tesi sono stati scaricati dal database di Scopus utilizzando le API che il sito 
-mette a disposizione.
+I dati che sono stati analizzati in questo progetto di tesi sono stati scaricati
+dal database di Scopus utilizzando le API che il sito mette a disposizione.
 
-Per implementare la dashboard e le varie pagine che mostrano i risultati delle interrogazioni ho utilizzato Python come 
-linguaggio di programmazione, il framework Django e SQLite come database.
-
+Per implementare la dashboard e le varie pagine che mostrano i risultati delle
+interrogazioni è utilizzato Python come linguaggio di programmazione, il
+framework Django e SQLite come database.
 
 %%%% SCOPUS API %%%%%
 \subsection{Scopus API}
-Scopus permette di accedere a circa 78 milioni di articoli, riviste scientifiche, libri e pubblicazioni.
-Le API di Scopus permettono di visualizzare abstract e dati riguardanti il numero di citazioni di tutte le riviste accademiche
-indicizzate da Scopus. 
 
-Sono disponibili due modi di utilizzo delle API di Scopus: commerciale e non commerciale. Per questa tesi sono state utilizzate le API a uso 
-non commerciale, disponibili gratuitamente per lavori swnza scopo di lucro.
+Scopus permette di accedere a circa 78 milioni di articoli, riviste
+scientifiche, libri e pubblicazioni. Le API di Scopus permettono di visualizzare
+abstract e dati riguardanti il numero di citazioni di tutte le riviste
+accademiche indicizzate da Scopus.
 
-Utilizzando le API di Scopus, si ha accesso diretto ai dati di Scopus in tempo reale, le \textit{API responses} includono link a risorse collegate, rendendo
-la navigazione più semplice e la documentazione consente di visualizzare in anteprima la richiesta e la risposta della API in modo interattivo.
-Inoltre l'architettura RESTful permette di avere vantaggi di scalabilità, portabilità e affidabilità.
+Sono disponibili due modi di utilizzo delle API di Scopus: commerciale e
+non commerciale. Per questa tesi sono state utilizzate le API a uso non
+commerciale, disponibili gratuitamente per lavori senza scopo di lucro.
+Utilizzando le API di Scopus si ha accesso diretto ai dati di Scopus in tempo
+reale. Le \textit{API responses} includono link a risorse collegate, rendendo
+la navigazione più semplice e la documentazione consente di visualizzare in
+anteprima la richiesta e la risposta della API in modo interattivo. Inoltre
+l'architettura RESTful permette di avere vantaggi di scalabilità, portabilità
+e affidabilità.
+Tali API risultano però sottoposte ad alcuni limiti, in quanto sono accessibili
+solo da reti di atenei riconosciute da Scopus ed implementano rate limiting\footnote{\url{https://dev.elsevier.com/api_key_settings.html}}.
 
-Le API scopus permettono di scaricare i dati quando si è connessi ad una rete di un ateneo riconosciuto da Scopus e fino ad un massimo di 5000 dati a settimana 
-per ogni API.
+Una categoria di API importante è rappresentata dalla \textit{Scopus Search}~\cite{scopussearch}.
+Essa può essere usata per accedere a dati riguardanti
+paper, con relativi autori ed atenei. Ogni risultato fornito è collegato ad un
+abstract e tramite link al resto del testo dell'articolo.
+Questa API utilizza la sintassi booleana che consente agli utenti di combinare
+parole chiave attraverso gli operatori \texttt{AND}, \texttt{OR} e \texttt{NOT},
+per poter produrre risultati  più rilevanti. La ricerca booleana viene inviata
+tramite il parametro \textit{query} della \textit{query string} e il contenuto
+della ricerca inviata deve essere  codificato nell'URL.
 
-%%%% SCOPUS SEARCH %%%%%
+\subsection{pybliometrics}\label{sec:pybliometrics}
 
-\subsubsection{Scopus Search API}
-Per il download dei dati riguardanti i paper, gli autori e gli atenei universitari, sono state utilizzate le API Scopus Search. Ogni risultato di ricerca 
-è collegato ad un abstract di Scopus oppure ad un link a tutto il testo dell'articolo. 
-
-Questa API utilizza la sintassi booleana che consente agli utenti di combinare parole chiave attraverso gli operatori AND, OR e NOT, per poter produrre risultati 
-più rilevanti. La ricerca booleana viene inviata tramite il parametro \textit{query} della \textit{query string} e il contenuto della ricerca inviata deve essere 
-codificato nell'URL.
-
-\subsubsection{pybliometrics}
-\texttt{pybliometrics} è una libreria di Python che serve per estrarre e memorizzare nella cache i dati dal database Scopus. 
-
-Le classi utilizzate sono le seguenti:
+\texttt{pybliometrics}~\cite{pybliometrics} è una libreria di Python che serve per estrarre e
+memorizzare nella cache i dati dal database Scopus.
+Essa fornisce un insieme di classi che forniscono un'astrazione dalle chiamate
+API di Scopus. Tali classi sono:
 \begin{itemize}
-  \item \texttt{AbstractRetrieval}: implementa l'API Abstract Retrieval di Scopus che consente di estrarre informazioni riguardo gli articoli 
-  a diversa profondità tramite viste;
-  \item \texttt{AffiliationRetrieval}: implementa l'API Affiliation Retrieval di Scopus che fornisce informazioni riguardo gli atenei registrati, come per esempio 
-  città, paese e membri;
-  \item \texttt{AuthorRetrieval}: implementa l'API Author Retrieval di Scopus che contiene tutte le informazioni riguardanti un autore;
-  \item \texttt{ScopusSearch} implementa l'API di ricerca di Scopus, esegue una query per cercare documenti e quindi recupera i record della query.
+	\item \texttt{AbstractRetrieval}: implementa l'API Abstract Retrieval di
+	Scopus che consente di estrarre informazioni riguardo gli articoli;
+	\item \texttt{AffiliationRetrieval}: implementa l'API Affiliation Retrieval
+	di Scopus che fornisce informazioni riguardo gli atenei registrati, come per
+	esempio città, paese e membri;
+	\item \texttt{AuthorRetrieval}: implementa l'API Author Retrieval di Scopus
+	che contiene tutte le informazioni riguardanti un autore;
+	\item \texttt{ScopusSearch} implementa l'API di ricerca di Scopus, esegue una
+	query per cercare documenti e quindi recupera i record della query.
   \end {itemize}
-
-Nella sezione \ref{download} verrà mostrato l'utilizzo di pybliometrics e delle classi.
 
 %%%% DJANGO %%%%%
 \subsection{Django}
 
-Django è un \textit{web framework} basato su Python che aiuta lo sviluppo di siti web basati su database, è open source e permette di 
-concentrarsi sullo sviluppo dell'applicazione.
+Django~\cite{django} è un framework web open source scritto in Python. È
+un framework ``batteries included'', ovvero tenta di fornire più strumenti
+possibile per ridurre sia la quantità di codice da scrivere sia la sua
+complessità.
 
-Ha una propria nomenclatura per le viste delle risposte HTTP e si basa sull'architettura MVC: 
+Django si basa sull'architettura \textit{Model, View, Template}, basata sulla più
+classica MVC. Essa propone tre diverse entità per la gestione dei dati e dell'interazione
+con l'utente, che sono:
 \begin{itemize}
-  \item \textit{Model}: il \textit{Object-Relational Mapper} media tra le classi Python che rappresentano i modelli di dati 
-  e il database relazionale;
-  \item \textit{View}: il sistema che processa le richieste HTTP media con un sistema di template;
-  \item \textit{Controller}: un dispatcher URL basato su espressioni regolari.
+	\item \textit{Model}, la descrizione dei dati tramite una classe Python;
+	\item \textit{View}, un sistema che processa le richieste degli utenti e
+	definisce che dati devono essere presentati in risposta;
+	\item \textit{Template}, un template HTML con un proprio linguaggio di templating
+	chiamato DTL (Django Template Language) che definisce la rappresentazione
+	grafica dei dati.
 \end{itemize}
+In questa categorizzazione, la \textit{View} di MVT corrisponde al \textit{Controller}
+di MVC, mentre il \textit{Template} di MVT corrisponde alla \textit{View} di MVC.
 
+\begin{lstlisting}[language=Python,caption=La classe \texttt{Author},       label=lst:author]
+from django.db import models
 
-
-%%% DOWNOLAD DEI DATI %%%%
-\section{Download dei dati}
-\label{download}
-
-Di seguito verrà illustrato il procedimento per il download dei dati utilizzati per costruire la base di dati. A titolo di esempio verrà mostrato il codice 
-per scaricare i file \texttt{.csv} contenenti le informazioni sui paper. 
-
-\subsection{Affiliations}
-Come precedentemente detto, per scaricare i dati riguardanti le università, viene utilizzata la classe \texttt{AffiliationRetrieval()} per l'interazione 
-con l'API scopus, la cui sintassi base è:
-\begin{lstlisting}
-  class pybliometrics.scopus.AffiliationRetrieval(aff_id, 
-      refresh=False, view='STANDARD', **kwds)
+class Author(models.Model):
+    surname = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    citation_count = models.IntegerField()
+    cited_by_count = models.IntegerField()
+    h_index = models.IntegerField()
 \end{lstlisting}
 
-dove:
-\begin{itemize}
-  \item \texttt{aff\_id}: id Scopus dell'università;
-  \item \texttt{refresh}: indica se aggiornare il file memorizzato nella cache;
-  \item \texttt{view}: visualizzazione del file da scaricare;
-  \item \texttt{kwds}: parole chiave trasmesse come parametetri alla query.
-\end{itemize}
+Django fornisce un ORM (\textit{Object-Relational Mapping}) tramite la
+rappresentazione di tabelle con delle classi che derivano dalla classe
+predefinita \texttt{Model}, come mostrato nel Listing~\ref{lst:author}. In
+tal modo, è possibile interagire con degli oggetti Python, del tutto simili
+alle classi, astraendo completamente dalla tecnologia di database utilizzata.
+Infatti, con Django è possibile utilizzare diversi DBMS~\cite{djangoDBMS}, tra cui PostgreSQL,
+MariaDB, MySQL e SQLite. Quest'ultimo è stato scelto per essere usato in questo
+progetto di tesi, in quanto la semplicità e la facilità di setup sono risultate
+fondamentali per velocizzare la realizzazione di prototipi.
 
-I dati filtrati sono:
+Le \textit{View} di Django possono essere rappresentate da varie entità nel codice,
+ma i modi principali sono le \textit{view generiche} tramite classi fornite dal framework
+stesso e delle semplici \textit{funzioni} che lavorano su un parametro rappresentante
+la richiesta effettuata dall'utente. Come esempio, nel Listing~\ref{lst:view-author-info}
+è rappresentata una view che ottiene le informazioni di un autore specifico,
+come salvate su database, aggiungendo inoltre una classificazione in base al
+rating delle conferenze a cui ha partecipato.
+
+\begin{lstlisting}[language=Python,caption=La view \texttt{author\_info},label=lst:view-author-info]
+def author_info(request, author_id):
+    author = get_object_or_404(Author, pk=author_id)
+    num_confs = {}
+
+    for pub in author.publication_set.all():
+        rating = pub.paper.conference.ggs_rating
+        if rating in num_confs:
+            num_confs[rating] += 1
+        else:
+            num_confs[rating] = 1
+
+    return render(request,
+                  "author_info.html",
+                  {"author": author, "num_confs": num_confs})
+\end{lstlisting}
+
+\section{Ottenimento dei dati}
+
+Come già anticipato in Sezione~\ref{sec:scopus}, la maggior parte dei dati è
+stata presa da Scopus. In particolare, Scopus ha fornito i dati di circa 80000
+papers negli ultimi 4 anni, con i relativi autori ed affiliazioni.
+Per le conferenze, non fornendo Scopus informazioni se non nome ed acronimo
+delle conferenze, si è fatto uso dei dati indicizzati da GII-GRIN-SCIE~\cite{giigrinscie} (GGS).
+
+Per il download dei dati da Scopus, si è usato \texttt{pybliometrics}
+(Sezione~\ref{sec:pybliometrics}) per lo sviluppo di script custom orientati
+al download di grandi quantità di dati in modo automatico facendo uso delle
+API fornite da Scopus.
+
+Per quanto riguarda le conferenze, invece, i nomi delle conferenze forniti da
+GGS non concordano in pieno con quelli presenti su Scopus. A questo fine,
+si è manualmente proceduto all'analisi delle conferenze ottenute ed al loro
+inserimento all'interno del database del progetto.
+Al fine di semplificare e velocizzare il processo, si è fatto uso della
+\textit{distanza di Levenshtein} per confrontare i nomi dati dalle due fonti.
+La priorità è stata comunque data agli acronimi rispetto ai nomi interi.
+
+\subsection{Distanza di Levenshtein}
+
+L'algoritmo di Levenshtein, introdotta per la prima volta nel
+1965~\cite{levenshtein1966} calcola la somiglianza tra due stringhe diverse.
+Date due stringhe $a$ e $b$, l'algoritmo misura il numero di modifiche
+elementari necessarie per trasformare la stringa $a$ nella stringa $b$.
+Tra le operazioni elementari si hanno eliminazione di un carattere,
+sostituzione di un carattere con un altro, inserimento di un nuovo carattere.
+Più precisamente, definite $a$ e $b$ due stringhe, $|a|$ la lunghezza di una
+stringa, la distanza di Levenshtein è definita come
+\begin{equation*}
+  \text{lev}(a, b) =
+  \begin{cases}
+    |a| & \text{se } |b| = 0 \\
+    |b| & \text{se } |a| = 0 \\
+    \text{lev}(\text{tail}(a), b) & \text{se } a_0 = b_0 \\
+    1 + \min\begin{cases}
+      \text{lev}(\text{tail}(a), b) \\
+      \text{lev}(a, \text{tail}(b)) \\
+      \text{lev}(\text{tail}(a), \text{tail}(b)) \\
+    \end{cases}
+    & \text{altrimenti}
+  \end{cases}
+\end{equation*}
+%
+Dove $\text{tail}$ rappresenta la coda di una lista, i.e., se $a_i$ è il
+carattere in posizione $i$, allora data la stringa $a = a_0a_1\cdots a_n$ si ha
+che $\text{tail}(a) = a_1\cdots a_n$.
+Nell'implementazione è stata usata la libreria
+\texttt{python-Levenshtein}~\cite{pythonLevenshtein}.
+
+%%% DOWNOLAD DEI DATI %%%%
+\section{Descrizione dei dati}\label{sec:descrizionedati}
+
+In Figura \ref{fig:logico} è visibile lo schema logico, rappresentante
+le tabelle presenti direttamente nel database, coi relativi attributi e chiavi
+esterne. Notare la presenza della tabella \textit{Publication}, in sostituzione
+alla relazione tripla nominata in Sezione~\ref{sec:modellizzazioni}.
+
+Al fine di identificare univocamente i dati, si è fatto uso dei campi
+identificativi forniti direttamente dal database di Scopus. Questo per evitare
+ambiguità con un'eventuale generazione automatica a partire dai dati,
+soprattutto in caso di omonimie.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{logico.png}
+  \caption{Schema logico del problema}
+  \label{fig:logico}
+\end{figure}
+
+\subsection{Affiliation}
+
+Un'affiliazione rappresenta un'università, e per ogni singola entry si ha
+interesse a mantenere i seguenti campi:
+
 \begin{itemize}
-  \item \texttt{aff\_id}
-  \item \texttt{affiliation\_name}: nome dell'università;
-  \item \texttt{state}: stato dell'università. Richiede la view STANDARD;
-  \item \texttt{country}: nazione dell'università;
-  \item \texttt{author\_count}: numero di autori associati all'università;
-  \item \texttt{document\_count}: numero di documenti per l'università.
+  \item \texttt{aff\_id}, l'identificativo dell'università;
+  \item \texttt{affiliation\_name}, nome dell'università;
+  \item \texttt{state} e \texttt{country}, contenenti informazioni riguardanti la posizione geografica dell'università;
+  \item \texttt{author\_count}, numero di autori associati all'università;
+  \item \texttt{document\_count}, numero di documenti per l'università.
 \end{itemize}
 
 \subsection{Author}
-Per prelevare i dati che riguardano gli autori viene utilizzata la classe \texttt{AuthorRetrieval()} che implementa l'API Scopus associata e contiene il record 
-dell'autore. 
-
-La sintassi base è:
-\begin{lstlisting}
-  class pybliometrics.scopus.AuthorRetrieval(author_id, 
-      refresh=False, view='ENHANCED', **kwds)
-\end{lstlisting}
-
-dove:
-\begin{itemize}
-  \item \texttt{author\_id}: id dell'autore;
-  \item \texttt{refresh}: indica se aggiornare il file memorizzato nella cache;
-  \item \texttt{view}: visualizzazione del file da scaricare. In questo caso vengono incluse tutte le informazioni della vista;
-  \item \texttt{kwds}: parole chiave trasmesse come parametetri alla query.
-\end{itemize}
-
-I dati filtrati sono:
+Un autore è rappresentato dai seguenti campi:
 \begin{itemize}
   \item \texttt{author\_id};
-  \item \texttt{surname};
-  \item \texttt{name};
-  \item \texttt{citation\_count}: numero totale di elementi citati;
-  \item \texttt{cited\_by\_count}: numero totale di autori citanti;
-  \item \texttt{h\_index}: h-index dell'autore.
+  \item dati per il nominativo, ovvero \texttt{surname} e \texttt{name};
+  \item \texttt{citation\_count}, numero totale di elementi citati;
+  \item \texttt{cited\_by\_count}, numero totale di autori citanti;
+  \item \texttt{h\_index}, h-index dell'autore.
 \end{itemize}
 
-\subsection{Conferences}
-I dati sui rating delle conferenze non sono stati scaricati da Scopus ma da (METTERE RIFERIMENTO ALLA BIO) che raccoglie le principali conferenze con rating compreso
-tra A++ e B-.
+\subsection{Conference}
 
-I dati filtrati sono:
+Di una conferenza ci interessa mantenere i seguenti campi:
 \begin{itemize}
-  \item \texttt{title}: nome della conferenza;
+  \item \texttt{title}, nome della conferenza;
   \item \texttt{acronym};
-  \item \texttt{GGS Rating};
-  \item \texttt{MA-Max. Num. of Papers}: numero di paper accettati dalla conferenza;
-  \item \texttt{MA-Max. Citations}: numero di citazioni;
+  \item \texttt{ggs\_rating}, il rate come definito da GGS;
+  \item \texttt{num\_papers}, numero di paper accettati dalla conferenza;
+  \item \texttt{citation\_count}, numero di citazioni totali di tutti i paper della conferenza.
 \end{itemize}
 
-\subsection{Papers}
-Per prelevare i dati riguardanti i papers viene utilizzata la classe \texttt{AbstractRetrieval()} che implementa l'API Scopus associata e permette una visualizzazione 
-a differenti livelli delle informazioni.
+\subsection{Paper}
 
-La sintassi base è:
-\begin{lstlisting}
-  class pybliometrics.scopus.AbstractRetrieval(identifier=None, 
-      refresh=False, view='META_ABS', id_type=None, **kwds)
-\end{lstlisting}
+Un paper viene rappresentato dai seguenti dati:
 
-dove:
-\begin{itemize}
-  \item \texttt{identifier}: id di un documento;
-  \item \texttt{refresh}: indica se aggiornare il file memorizzato nella cache;
-  \item \texttt{view}: visualizzazione del file da scaricare. In questo caso vengono incluse tutte le informazioni della vista;
-  \item \texttt{id\_type}: tipo di id che è stato utilizzato per la ricerca;
-  \item \texttt{kwds}: parole chiave trasmesse come parametetri alla query.
-\end{itemize}
-
-I dati filtrati sono:
 \begin{itemize}
   \item \texttt{id};
-  \item \texttt{Authors}: lista di autori del paper;
-  \item \texttt{Author(s) id};
-  \item \texttt{Title};
-  \item \texttt{Year};
-  \item \texttt{Source title}: abbreviazione della conferenza a cui è stato pubblicato il documento. Richiede la visualizzazione FULL dell'articolo;
-  \item \texttt{confcode}: codice della conferenza a cui il paper è stato sottoposto;
+  \item \texttt{authors}, lista di autori del paper (rappresentati dai relativi identificativi);
+  \item \texttt{title};
+  \item \texttt{year};
+  \item \texttt{conference}, la conferenza a cui è stato presentato;
+  \item \texttt{cited\_by\_count}, il numero di citazioni;
+  \item \texttt{doi}, il suo identificativo DOI.
 \end{itemize}
 
-I dati dei paper e delle conferenze provengono da database differenti quindi non c'era corrispondenza tra le conferenze registrate in Scopus e quelle raccolte da GII, 
-GRIN e SCIE. Per creare un database omogeneo si è optato per scorrere tutti i paper e confrontare i \texttt{Source title} con i \texttt{title} delle conferenze, 
-utilizzando la \textit{distanza di Levenshtein} nel confronto. 
-
-\subsubsection{Distanza di Levenshtein}
-L'algoritmo di Levenshtein calcola la somiglianza tra due stringhe diverse. Date due stringhe A e B, l'algoritmo misura il numero di modifiche elementari necessarie 
-per trasformare la stringa A nella stringa B. 
-
-Tra le operazioni elementari si hanno: eliminazione di un carattere, sostituzione di un carattere con un altro, inserimento di un nuovo carattere.
-
-Per il calcolo, viene utilizzata l'estensione Levenshtein di Python.
-
-Il codice per il confronto è il seguente:
-
-\begin{lstlisting}[language=Python]
-  papers = pd.read_csv('./papers/full-with-conf-id.csv')
-  confs = pd.read_csv('../conferenze/output.csv')
-  
-  cache = {}
-  totp = len(papers)
-  totc = len(confs)
-
-  try:
-      for i in range(totp):
-          if papers['confid'][i] != 'TODO':
-              print('Already done')
-              os.system('clear')
-              continue
-
-          confname = papers['confname'][i]
-          if confname in cache:
-              print(f'Using {cache[confname]}')
-          else:
-              print(f'Doing "{confname}"')
-              lst = []
-              for j in range(totc):
-                  code = confs['acronym'][j]
-                  title = confs['title'][j]
-                  id = confs['id'][j]
-                  if code in confname:
-                      lst.append((0, id, title, code))
-                  else:
-                      d = distance(title.lower(), confname.lower())
-                      lst.append((d, id, title, code))
-              lst = sorted(lst, key=lambda t: t[0])
-              for index, (d, id, title, code) in enumerate(lst[:30]):
-                  print(f'{index} --- {d} {id} "{title}" ({code})')
-  
-              choice = input('Best: ')
-              if choice == '':
-                  id = lst[0][1]
-              elif choice == 'pass':
-                  id = '-'
-              elif choice == 'custom':
-                  id = input('Custom id: ')
-                  id = int(id)
-              else:
-                  id = lst[int(choice)][1]
-  
-              cache[confname] = id
-              print()
-  
-          # save
-          confname = papers['confname'][i]
-          id = cache[confname]
-          papers['confid'][i] = id
-          os.system('clear')
-  
-          if i % 5 == 0:
-              print('Saving')
-              papers.to_csv('./papers/full-with-conf-id.csv', index=False)
-  finally:
-      print('Saving')
-      papers.to_csv('./papers/full-with-conf-id.csv', index=False)
-\end{lstlisting}
-
-
-
-\section{Implementazione di views e metriche}
+% \section{Implementazione di views e metriche}
 
 
