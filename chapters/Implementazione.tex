@@ -18,12 +18,15 @@ Il lavoro si suddivide principalmente nelle seguenti fasi:
 
 Oltre agli indici direttamente disponibili (e.g., H-index, citazioni, qualità
 delle conferenze), sono state derivate alcune metriche per via campionaria.
-Esse sono:
+Tra le principali analizzate vi sono:
 \begin{itemize}
   \item La distribuzione della qualità delle conferenze analizzate;
+  \item La distribuzione degli H-index degli autori;
+  \item La distribuzione della qualità dei lavori per un certo autore;
   \item La correlazione tra qualità delle conferenze e distribuzione del numero delle citazioni dei paper;
-  \item \todo{Aggiungere le altre}.
+  \item La correlazione tra la qualità di una conferenza e la distribuzione degli H-index degli autori coinvolti.
 \end{itemize}
+\todo{Vedere di aggiungerne altre}
 
 %%%% STRUMENTI %%%%%
 \section{Strumenti}
@@ -81,13 +84,35 @@ API di Scopus. Tali classi sono:
 	che contiene tutte le informazioni riguardanti un autore;
 	\item \texttt{ScopusSearch} implementa l'API di ricerca di Scopus, esegue una
 	query per cercare documenti e quindi recupera i record della query.
-  \end {itemize}
+\end {itemize}
+
+Un esempio d'uso della API, preso da~\cite{pybliometrics}, è dato dal
+Listing~\ref{lst:pybliometrics-example}.
+
+\begin{lstlisting}[language=Python, caption=Esempio d'uso di \texttt{pybliometrics}, label=lst:pybliometrics-example]
+from pybliometrics.scopus import AbstractRetrieval, AuthorRetrieval, AffiliationRetrieval
+
+ab = AbstractRetrieval("10.1016/j.softx.2019.100263")
+
+print(ab.title) # 'pybliometrics: Scriptable ...'
+print(ab.authors) # > [Author(...), Author(...)]
+
+au1 = AuthorRetrieval(ab.authors[0].auid)
+au2 = AuthorRetrieval(ab.authors[1].auid)
+
+print(au1.affiliation_current) # [Affiliation(...)]
+print(au2.h_index) # 34
+
+aff1 = AffiliationRetrieval(au1.affiliation_current[0].id)
+
+print(aff1.author_count) # 98
+\end{lstlisting}
 
 \subsection{GII-GRIN-SCIE}
 \todo{Descrivere}
 
 %%%% DJANGO %%%%%
-\subsection{Django}
+\subsection{Django}\label{sec:django}
 
 Django~\cite{django} è un framework web open source scritto in Python. È
 un framework ``batteries included'', ovvero tenta di fornire più strumenti
@@ -108,7 +133,7 @@ con l'utente, che sono:
 In questa categorizzazione, la \textit{View} di MVT corrisponde al \textit{Controller}
 di MVC, mentre il \textit{Template} di MVT corrisponde alla \textit{View} di MVC.
 
-\begin{lstlisting}[language=Python,caption=La classe \texttt{Author},       label=lst:author]
+\begin{lstlisting}[language=Python, caption=La classe \texttt{Author}, label=lst:author]
 from django.db import models
 
 class Author(models.Model):
@@ -194,7 +219,22 @@ Conferences - Produzione Scientifica
 {% endblock content %}
 \end{lstlisting}
 
-\todo{Descrivere l'organizzazione delle rotte in Django ed il flusso delle richieste.}
+Django offre anche la possibilità di avere più di una \textit{app} su uno stesso
+server web, ciascuna con le proprie views, i propri template ed il proprio
+database. In questo modo, è possibile separare la configurazione generica del
+server gestito da Django da varie applicazioni che girano su di esso.
+Per questo progetto, la creazione di una singola app è più che sufficiente.
+
+Django associa ad ogni possibile \textit{path} (o URL) di una richiesta HTTP
+una certa view. Quando una richiesta HTTP viene inviata dal client verso il
+server gestito da Django, quest'ultimo effettua una ricerca fra i propri path
+definiti ed inoltra la richiesta, trasformata in un oggetto Python, alla
+\textit{view} che si occupa della sua gestione.
+Tale view può eseguire qualsiasi azione desiderata, come aggiorare il database o
+leggere dati, anche differenziando in base al metodo HTTP usato dalla richiesta.
+Una volta terminato però il lavoro necessario, la view è costretta a ritornare
+una risposta al client, sia essa positiva o negativa, che la mostrerà all'utente
+tramite un browser o qualsiasi altro tool usato.
 
 \section{Ottenimento dei dati}
 
@@ -247,6 +287,14 @@ carattere in posizione $i$, allora data la stringa $a = a_0a_1\cdots a_n$ si ha
 che $\text{tail}(a) = a_1\cdots a_n$.
 Nell'implementazione è stata usata la libreria
 \texttt{python-Levenshtein}~\cite{pythonLevenshtein}.
+
+Al fine di dimostrare brevemente il ragionamento intrapreso, si prendano come
+esempio le due stringhe \texttt{kitten} e \texttt{sitting}. In tal caso, si
+ha che $\text{lev}(\text{kitten}, \texttt{sitting}) = 3$. Infatti, la seconda
+stringa si può ottenere dalla prima effettuando le sostituzioni $k \to s$
+e $e \to i$, con l'aggiunta finale della lettera \textit{g}.
+Di conseguenza, essendo le modifiche elementari pari in numero a 3, esso è
+anche il valore assunto dalla distanza di Levenshtein.
 
 %%% DOWNOLAD DEI DATI %%%%
 \section{Descrizione dei dati}\label{sec:descrizionedati}
@@ -320,9 +368,48 @@ Un paper viene rappresentato dai seguenti dati:
 
 \section{Applicazione web}
 
+L'applicazione web realizzata in questo progetto di tesi offre la funzionalità
+di accesso semplificato ai dati ottenuti e, più importantemente, di visualizzazione
+delle varie analisi metriche ottenute.
+
 \subsection{Struttura dei file}
 
-\todo{Descrivere la separazione data da Django nei file e nel codice}
+% \todo{Descrivere la separazione data da Django nei file e nel codice}
+
+La struttura di file e directory di un'applicazione web scritta con Django 
+segue una forma fissa, definita dal framework, che permette l'organizzazione
+delle varie parti di codice in base al loro ruolo all'interno dell'architettura.
+Le principali sezioni in questo progetto sono date da:
+\begin{itemize}
+  \item La directory \texttt{mainapp}, che contiene il codice della \textit{app}
+        principale di Django;
+  \item Il file \texttt{manage.py}, che offre un'interfaccia da riga di comando
+        per la gestione di migrazioni sul database, l'avvio e l'arresto di server
+        web locali, e simili operazioni di gestione del progetto;
+  \item Una directory \texttt{prodsc} per i file usati da Django nella configurazione
+        dell'intera applicazione web.
+\end{itemize}
+
+A sua volta, la cartella \texttt{mainapp} contiene i seguenti:
+\begin{itemize}
+  \item \texttt{admin.py}, che contiene le definizioni base per permettere l'uso
+        della console di amministrazione offerta da Django;
+  \item \texttt{apps.py}, per la configurazione di eventuali app interne a \texttt{mainapp};
+  \item \texttt{forms.py}, la definizione del form di upload dei dati, usato per la
+        semplificazione della conversione dei dati CSV ottenuti dalle API per
+        poter essere inseriti in database;
+  \item \texttt{images.py}, che definisce tutte le view per la generazione di
+        grafici di metriche tramite \texttt{matplotlib};
+  \item \texttt{migrations}, una cartella per le varie migrazioni del database SQLite;
+  \item \texttt{models.py}, il modulo che definisce le varie classi dei modelli
+        come descritto in Sezione~\ref{sec:django};
+  \item \texttt{static}, per file statici come CSS e JavaScript;
+  \item \texttt{templates}, directory contenente i diversi template usati dalle view;
+  \item \texttt{urls.py}, che definisce gli endpoint accettati da Django e quale
+        view è responsabile per la gestione di ciascuno di essi;
+  \item Ed infine \texttt{views.py}, le diverse views per la visualizzazione
+        dei vari dati utilizzati.
+\end{itemize}
 
 \subsection{Calcolo delle metriche}
 
@@ -330,6 +417,13 @@ Un paper viene rappresentato dai seguenti dati:
 
 \section{Metriche e correlazioni}\label{sec:metriche-correlazioni}
 
+\todo{Magari confrontare le metriche per tutti gli autori e le stesse ma solo
+  per gli autori che hanno e.g. almeno X conferenze di alto livello (A+, A++)}
+
 \subsection{Distribuzione delle conferenze}
 
-\subsection{Correlazione tra qualità delle conferenze e distribuzione delle citazioni}
+\subsection{Distribuzione degli H-index}
+
+\subsection{Correlazione tra qualità di una conferenza e distribuzione delle citazioni}
+
+\subsection{Correlazione tra qualità di una conferenza e distribuzione degli H-index}

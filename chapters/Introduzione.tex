@@ -48,6 +48,9 @@ dell'Università e della Ricerca in una serie di categorie
     \item Tutto ciò che sia riconducibile ad attività di ricerca, come brevetti, software, disegni, 
     purché accompagnato da pubblicazioni e documentazione per poter essere valutati.
 \end{itemize}
+%
+Questi non risultano essere però l'unica classificazione esistente. Un altro
+esempio di classificazione, seppur molto simile, è visibile in~\cite{oechsner2013}.
 
 Inoltre, il MIUR ha anche proposto quattro criteri che devono essere
 simultaneamente soddisfatti affinché un certo documento possa essere definito
@@ -105,7 +108,7 @@ Una pubblicazione deve necessariamente presentare i seguenti campi:
 
 \subsection{Conferenze scientifiche}\label{sec:conferenze}
 
-\todo{Descriverenza brevemente cosa è una confere}
+\todo{Descriverenza brevemente cosa è una conferenza}
 
 La differenza tra un documento presentato ad una conferenza rispetto ad uno
 presentato ad una rivista di ricerca è che il primo è più breve e i tempi
@@ -153,6 +156,10 @@ Un indice importante che riguarda le conferenze è il \textit{rating}, cioè
 come viene valutata una conferenza. Nella Tabella \ref{table:ratings} vengono
 mostrati i rating delle conferenze più importanti.
 
+Per quanto riguarda in particolare l'ambito di ricerca in sicurezza informatica,
+ci sono quattro conferenze considerate \textit{top}. Esse sono CCS, S\&P, Usenix
+e NDSS.
+
 %%%% SCOPUS %%%%
 
 \subsection{Scopus}\label{sec:scopus}
@@ -191,6 +198,25 @@ registrati a tale fine sono:
     \item \textit{Numero dei documenti}, che riguarda il numero di paper prodotti dall'università.
 \end{itemize}
 
+
+%%% GOOGLE SCHOLAR %%%
+\subsection{Google Scholar}\label{sec:google-scholar}
+
+Google Scholar~\cite{scholar} è un motore di ricerca web gratuito che indicizza il testo
+completo (o i metadati) di letteratura scientifica in varie discipline.
+
+Google Scholar include articoli di riviste, libri, conferenze, tesi, abstract,
+report tecnici e così via.
+Mentre Scopus è una base di dati aggiornata quotidianamente da Elsevier, Google
+Scholar fa uso di \textit{web crawlers} per scoprire in modo automatico nuovi
+articoli e ricavare senza intervento umano la rete di citazioni.
+Una prima statistica del 2014~\cite{khabsa2014} stima che Google Scholar
+indicizzi fra il 79\% ed il 90\% della letteratura scientifica in inglese,
+per un totale di 100 milioni di articoli.
+
+A differenza di Scopus, Google Scholar non offre una API ufficiale per l'accesso
+programmatico agli articoli che indicizza~\cite{stackoverflowScholarAPI}: per
+questo motivo non è stato usato come fonte dei dati usati in questa tesi.
 
 %%% MODELLIZZAZIONI %%%%%
 \section{Modellizzazioni}\label{sec:modellizzazioni}
