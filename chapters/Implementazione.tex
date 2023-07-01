@@ -413,17 +413,61 @@ A sua volta, la cartella \texttt{mainapp} contiene i seguenti:
 
 \subsection{Calcolo delle metriche}
 
-\todo{Descrivere come le immagini delle metriche sono ottenute}
+Le metriche sono calcolate tramite codice Python scritto ad-hoc per ogni
+caso, usando i dati salvati nel database descritto nelle sezioni precedenti.
+Per comodità ed organizzazione, per ogni metrica che ha una rappresentazione
+tramite immagine è presente una view in \texttt{mainapp/images.py}.
 
-\section{Metriche e correlazioni}\label{sec:metriche-correlazioni}
+Tali immagini sono ottenute tramite \texttt{matplotlib}. Dove necessario,
+\texttt{pandas} e \texttt{numpy} offrono delle capacità di manipolazione dati
+più avanzate di quanto disponibile direttamente dall'ORM di Django.
 
-\todo{Magari confrontare le metriche per tutti gli autori e le stesse ma solo
-  per gli autori che hanno e.g. almeno X conferenze di alto livello (A+, A++)}
+Come esempio, prendiamo la distribuzione delle conferenze usate in questo
+progetto, analizzata ulteriormente in Sezione~\ref{sec:distrib-conferenze},
+al fine di illustrare la realizzazione di una semplice immagine.
+Come si può vedere nel Listing~\ref{lst:distrib-conf}, l'immagine viene creata
+tramite una view di Django. La differenza principale è data dalla creazione
+di una \texttt{figure.Figure} tramite la libreria \texttt{matplotlib}.
+Inoltre, la risposta ritornata dalla view ha un \texttt{Content-Type} pari a
+\texttt{image/png}, cosicché il client non interpreti erronamente il contenuto
+come testo o come HTML.
 
-\subsection{Distribuzione delle conferenze}
+\begin{lstlisting}[language=Python, caption=Distribuzione delle conferenze, label=lst:distrib-conf]
+import matplotlib.figure as figure
 
-\subsection{Distribuzione degli H-index}
+def create_image(fig):
+    resp = HttpResponse(content_type="image/png")
+    fig.savefig(resp)
+    return resp
 
-\subsection{Correlazione tra qualità di una conferenza e distribuzione delle citazioni}
+def conferences_distribution(request):
+    ratings = list(reversed(["A++", "A+", "A", "A-", "B", "B-"]))  # I want A++ on top
+    counts = [len(Conference.objects.filter(ggs_rating=rating)) for rating in ratings]
 
-\subsection{Correlazione tra qualità di una conferenza e distribuzione degli H-index}
+    f = figure.Figure()
+    ax = f.add_subplot()
+
+    ax.barh(ratings, counts)
+
+    return create_image(f)
+\end{lstlisting}
+
+Successivamente, come ogni altra view, è necessario fornire un URL a cui
+Django risponderà con l'immagine creata. Tale passo è visibile nel
+Listing~\ref{lst:distrib-conf-urls}, che contiene un estratto del file
+\texttt{mainapp/urls.py}.
+
+\begin{lstlisting}[language=Python, caption=Estratto di \texttt{mainapp/urls.py}, label=lst:distrib-conf-urls]
+from django.urls import path
+from . import views, images
+
+urlpatterns = [
+    # ...
+    path(
+        "conferences/distribution.png",
+        images.conferences_distribution,
+        name="conferences_distribution.png",
+    ),
+    # ...
+]
+\end{lstlisting}
