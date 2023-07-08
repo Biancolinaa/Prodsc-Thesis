@@ -131,34 +131,42 @@ allo scopo della conferenza.
 % del paper verrà accettata, sarà possibile presentare il proprio lavoro alla
 % conferenza.
 
+Un indice importante che riguarda le conferenze è il \textit{rating}, cioè
+come viene valutata una conferenza. In questo progetto di tesi si è tenuto
+conto del rating fornito dal GGS.
+
+L'iniziativa GGS è data dall'unione di tre membri: GII, GRIN e SCIE che si sono prefissi l'obiettivo di elaborare una classificazione delle conferenze di informatica, combinando approcci bibliometrici e non.
+
+Il GII (Gruppo di Ingegneria Informatica) \cite{gii} ed il GRIN(Gruppo di Informatica) \cite{grin} sono dei gruppi di ricercatori universitari con l'obiettivo di organizzare e promuovere le attività scientifiche in Italia. Differentemente, la SCIE (Sociedad Científica Española de Informática) svolge un ruolo simile, ovvero la promozione dell'informatica, in Spagna.
+
+La classifica \cite{ggsRatingPdf} si basa sulla combinazione ponderata tra classifica CORE e altre fonti. Inoltre, l'algoritmo utilizzato applica un passo di normalizzazione, ottenuto dividendo il numero di citazioni e il numero di pubblicazioni, ad ogni conferenza.
+Si ottiene quindi la classifica visibile in Tabella \ref{table:ratings}.
+Notare che in questa tabella manca il rating \textit{C}, che viene riservato
+dal CORE per le conferenze al di sotto di quelle con rating \textit{B}.
+Per quanto riguarda in particolare l'ambito di ricerca in sicurezza informatica,
+ci sono quattro conferenze considerate \textit{top}. Esse sono CCS, S\&P, Usenix
+e NDSS.
+
 \begin{table}
     \centering
     \begin{tabular}{||c c ||} 
      \hline
      Classe & Descrizione \\ [0.5ex] 
      \hline\hline
-     A++, A+ & Conferenze di alto livello \\ 
+     A++, A+ & Conferenze di ottimo livello \\ 
      \hline
-     A, A- & Conferenze di alta qualità \\
+     A, A- & Conferenze di alto livello \\
      \hline
-     B, B- & Conferenze di buona qualità \\
+     B, B- & Conferenze di buon livello \\
      \hline
-     C & Conferenze di bassa qualità \\
+     Work In Progress & Rating non ancora calcolato \\
      \hline
     \end{tabular}
     \caption{Rating delle conferenze}
     \label{table:ratings}
 \end{table}
 
-\todo{Aggiungere qualche parola sulla classificazione: chi la fa, come (CORE, GGS, etc)}
-
-Un indice importante che riguarda le conferenze è il \textit{rating}, cioè
-come viene valutata una conferenza. Nella Tabella \ref{table:ratings} vengono
-mostrati i rating delle conferenze più importanti.
-
-Per quanto riguarda in particolare l'ambito di ricerca in sicurezza informatica,
-ci sono quattro conferenze considerate \textit{top}. Esse sono CCS, S\&P, Usenix
-e NDSS.
+\todo{Il CORE, invece, etc.}
 
 %%%% SCOPUS %%%%
 
@@ -217,6 +225,9 @@ per un totale di 100 milioni di articoli.
 A differenza di Scopus, Google Scholar non offre una API ufficiale per l'accesso
 programmatico agli articoli che indicizza~\cite{stackoverflowScholarAPI}: per
 questo motivo non è stato usato come fonte dei dati usati in questa tesi.
+
+
+
 
 %%% MODELLIZZAZIONI %%%%%
 \section{Modellizzazioni}\label{sec:modellizzazioni}
