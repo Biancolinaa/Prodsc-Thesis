@@ -108,6 +108,44 @@ aff1 = AffiliationRetrieval(au1.affiliation_current[0].id)
 print(aff1.author_count) # 98
 \end{lstlisting}
 
+\subsection{matplotlib}
+
+\texttt{matplotlib}~\cite{matplotlib} è una libreria Python per la creazione
+di grafi e visualizzazioni di dati in Python. In questo progetto la libreria
+è stata usata per la creazione dei grafici rappresentanti metriche aggregate,
+come ad esempio la distribuzione delle conferenze secondo il loro rating, 
+al fine di semplificare la fruizione dei vari indici.
+
+Inoltre, la libreria permette l'export delle visualizzazioni in vari formati,
+come PNG, JPEG e PDF, anche integrabili direttamente in risposte a chiamate HTTP.
+Fornisce inoltre la possibilità di creare visualizzazioni interattive, seppur
+non usata in questo progetto di tesi.
+
+L'interfaccia esposta da \texttt{matplotlib} è stata creata appositamente per
+essere utilizzabile anche da persone con esperienza pregressa del linguaggio
+Matlab, in quanto è molto simile al parco di funzioni fornite da quest'ultimo
+per la creazione di grafi. Non solo, anche lo stile grafico predefinito è
+ispirato da quello dato da Matlab.
+
+Nel Listing~\ref{lst:matplotlib-example} si può vedere un esempio d'uso per
+la creazione di un grafico a barre.
+
+\begin{lstlisting}[float, language=Python, caption=Esempio d'uso di \texttt{matplotlib}, label=lst:matplotlib-example]
+import matplotlib.pyplot as plt
+
+xs = ['A++', 'A+', ...]
+ys = [10, 20, ...]
+
+plt.figure()
+plt.title('Distribuzione del rating delle conferenze')
+plt.bar(xs, ys)
+plt.xlabel('Rating della conferenza')
+plt.ylabel('Numero conferenze')
+plt.show()
+\end{lstlisting}
+
+\subsection{GII-GRIN-SCIE}
+\todo{Descrivere}
 
 %%%% DJANGO %%%%%
 \subsection{Django}\label{sec:django}
