@@ -59,14 +59,32 @@ che contribuisce ai suoi indici principali, tra cui l'$h$-index.
 La Figura~\ref{fig:paper-rating-distribution} mostra appunto tale distribuzione,
 rappresentando con un punto il numero di citazioni di ogni singolo paper e
 con una linea rossa la media di citazioni in base al rating della conferenza
-a cui il paper è stato sottomesso.
+a cui il paper è stato sottomesso. I valori di tale media sono visibili
+anche in Tabella~\ref{table:paper-rating-distribution}.
 
 \begin{figure}[tb]
   \centering
-  \includegraphics[width=\linewidth]{paper-rating-distribution.png}
+  \includegraphics[width=\linewidth]{paper_rating_distribution.png}
   \caption{Numero di citazioni per conferenza}
   \label{fig:paper-rating-distribution}
 \end{figure}
+
+\begin{table}[tb]
+  \centering
+  \begin{tabular}{||l | r ||}
+    \hline
+    \textbf{Rating conferenza} & \textbf{Numero di citazioni medio} \\ [0.5ex] 
+    \hline\hline
+    A++    & 1.075884 \\ \hline
+    A+     & 1.422904 \\ \hline
+    A      & 1.541459 \\ \hline
+    A-     & 2.191858 \\ \hline
+    B      & 1.384308 \\ \hline
+    B-     & 1.795274 \\ \hline
+  \end{tabular}
+  \caption{Numero di citazioni medio per rating}
+  \label{table:paper-rating-distribution}
+\end{table}
 
 Dall'immagine è possibile trarre due conclusioni importanti:
 \begin{enumerate}
@@ -84,8 +102,57 @@ il numero di citazioni ottenute nel breve periodo ($\sim$5 anni), con anzi
 un aumento delle citazioni in media per conferenze non top, ovvero con ranking
 da A in giù.
 
+\subsection{Media dell'$h$-index per conferenza in base al rating}
 
+Oltre al numero di citazioni, è interessante guardare anche
+a come l'$h$-index degli autori è correlato con il rating delle conferenze
+a cui partecipano. Questo perché ci si aspetta che conferenze con un rating
+maggiore attirino ricercatori con più esperienza, in quanto il loro
+processo di accettazione è sicuramente più selettivo rispetto a conferenze
+più nuove oppure semplicemente classificate come di livello inferiore.
 
+Nella Figura~\ref{fig:h-index-vs-rating} si vede appunto questa metrica,
+rappresentata tramite un grafico a violino con in rosso la media dell'$h$-index
+per rating della conferenza, i cui valori precisi sono visibili in
+Tabella~\ref{table:h-index-vs-rating}.
+
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=\linewidth]{h_index_vs_conference_rating.png}
+  \caption{$h$-index per conferenza}
+  \label{fig:h-index-vs-rating}
+\end{figure}
+
+\begin{table}[tb]
+  \centering
+  \begin{tabular}{||l|r||}
+    \hline
+    \textbf{Rating conferenza} & \textbf{$h$-index medio} \\ [0.5ex] 
+    \hline\hline
+    A++    & 11.97 \\ \hline
+    A+     & 11.04 \\ \hline
+    A      & 8.27  \\ \hline
+    A-     & 13.34 \\ \hline
+    B      & 8.39 \\ \hline
+    B-     & 8.84 \\ \hline
+  \end{tabular}
+  \caption{Valori medi dell'$h$-index}
+  \label{table:h-index-vs-rating}
+\end{table}
+
+Come si può vedere dai dati, per le conferenze di livello ottimo (A++ e A+)
+si ha un $h$-index maggiore in media, pari a circa $11.51$, rispetto a quelle
+degli altri due livelli ($10.81$ per le conferenze A e A-, $8.62$ per le B e
+B-).
+
+Questo coincide con le aspettative: conferenze di livello maggiore hanno
+un processo selettivo più restrittivo e di conseguenza è più probabile
+che un ricercatore con più esperienza (e quindi con $h$-index probabilmente
+più alto) sottoponga lavori a queste conferenze.
+
+Notare comunque che la differenza fra le varie categorie non è così elevata,
+e le curve sono fortemente sbilanciate verso $h$-index bassi in ogni caso,
+anche se ciò è più visibile nelle conferenze di rating B e B-.
 
 % \chapter{Metriche}
 %In questo capitolo verranno descritte le metriche anticipate nella Sezione \ref{descrizione_progetto}, mostrando il relativo codice e i risultati ottenuti.

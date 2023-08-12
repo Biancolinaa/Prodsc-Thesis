@@ -454,7 +454,7 @@ A sua volta, la cartella \texttt{mainapp} contiene i seguenti:
 Di seguito è descritta come è stata realizzata la dashboard per la visualizzazione dei dati e delle metriche realizzate.
 
 Come stile delle pagine web viene utilizzato \textit{Bootstrap}, un framework per lo sviluppo front-end. 
-Nel file \texttt{base.html}, contenuto nella directory \texttt{templates}, è contenuto il codice dello stile, che presenta una barra laterale per la navigazione del sito, come visibile nel Listing~\ref{lst:base_html}.
+Nel file \texttt{base.html}, contenuto nella directory \texttt{templates}, è contenuto il codice dello stile, che presenta una barra laterale per la navigazione del sito.
 
 Come visibile dal codice, in Django si utilizza il tag \texttt{\{\% block \%\}} per definire un blocco che può essere sovrascritto dai modelli che ne derivano. In questo codice viene definito il blocco del modello base, per ogni pagina verrà poi definito un blocco figlio con contenuti diversi. I blocchi utilizzati sono:
 
@@ -464,40 +464,6 @@ Come visibile dal codice, in Django si utilizza il tag \texttt{\{\% block \%\}} 
   \item \texttt{\{\% url \%}\}: per l'url della pagina collegata;
   \item \texttt{\{\% block content \%}\}: per il contenuto della pagina.
 \end{itemize}
-
-\begin{lstlisting}[language=html, caption=Estratto di \texttt{template/base.html}, label=lst:base_html]
-<html>
-<head>
-  <title>{% block title %}Produzione Scientifica{% endblock title %}</title>
-
-  {% load static %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/sb-admin-2.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/override.css' %}" />
-</head>
-
-<body>
-  <div id="wrapper">
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
-        <div class="sidebar-brand-text mx-3">Produzione scientifica</div>
-      </a>
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'affiliations' %}">Affiliations</a>
-      </li>
-      ...
-    </ul>
-    <!-- Content wrapper -->
-    <div id="content-wrapper" class="p-5 d-flex flex-column">
-    {% block content %}{% endblock content %}</div>
-  </div>
-
-</body>
-</html>
-\end{lstlisting}
 
 Nella Figura \ref{fig:homepage} è mostrata l'hompage del sito che contiene ... 
 \todo{Descrivere cosa si visualizza nella prima pagina}
@@ -509,14 +475,14 @@ Nella Figura \ref{fig:homepage} è mostrata l'hompage del sito che contiene ...
   \label{fig:homepage}
 \end{figure}
 
-\subsubsection{Visualizzazione dei dati del database}
-Per le entità Affiliation, Author e Conference sono state dedicate delle pagine per la visualizzazione dei dati presenti nel database.
+\subsection{Conferenze}
 
-Prendendo per esempio le Affiliation, nel Listing \ref{lst:affiliation_html} è mostrato il codice per la visualizzazione della tabella dei dati contenuti nel database. 
+\subsection{Autori}
 
+\subsection{Università}
 
 \begin{lstlisting}[language=html, caption=Estratto di \texttt{template/affiliation.html}, label=lst:affiliation_html]
-  {% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
 Affiliations - Produzione Scientifica
@@ -537,9 +503,7 @@ Affiliations - Produzione Scientifica
   <tbody>
     {% for a, h_index in affiliations %}
     <tr>
-      <td>
-        {{ a.name }}
-      </td>
+      <td>{{ a.name }}</td>
       <td>{{ a.country }}</td>
       <td>{{ a.author_count }}</td>
       <td>{{ h_index }}</td>
@@ -548,12 +512,8 @@ Affiliations - Produzione Scientifica
   </tbody>
 </table>
 {% endblock content %}
-  
+
 \end{lstlisting}
-
-Nella sezione successiva invece verrà introdotto il codice per il calcolo delle metriche.
-
-%% Calcolo delle metriche
 
 \subsection{Calcolo delle metriche}
 
