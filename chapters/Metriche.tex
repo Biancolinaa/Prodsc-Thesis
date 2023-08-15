@@ -92,7 +92,7 @@ Dall'immagine è possibile trarre due conclusioni importanti:
         periodo di qualche anno che è stato considerato;
   \item La seconda, invece, è che la distribuzione delle citazioni è molto sbilanciata,
         in quanto ci sono molti paper con poche citazioni e pochi paper che superano
-        le 10 citazioni.
+        le 50 citazioni.
 \end{enumerate}
 
 Queste due conclusioni valgono inoltre per qualsiasi ranking di conferenza,
@@ -164,6 +164,7 @@ Il numero di affiliazioni considerate conta poco meno di 13000 fra università
 e centri di ricerca, con un totale di 131 nazioni.
 
 \subsection{Autori e documenti per stato di appartenenza}
+\label{ssec:authors-docs-per-country}
 
 Tale metrica viene analizzata principalmente come base per le successive, in
 quanto uno stato con molti più autori ha anche molta più probabilità di avere
@@ -180,15 +181,20 @@ Tale metrica è visibile in Figura~\ref{fig:num-documents-per-country}.
 
 \begin{figure}[tb]
   \centering
-  \includegraphics[width=\linewidth]{num_authors_per_country.png}
-  \caption{Numero di autori per i primi 10 stati}
-  \label{fig:num-authors-per-country}
-\end{figure}
-\begin{figure}[tb]
-  \centering
-  \includegraphics[width=\linewidth]{num_documents_per_country.png}
-  \caption{Numero di documenti per i primi 10 stati}
-  \label{fig:num-documents-per-country}
+  \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{num_authors_per_country.png}
+    \caption{Numero di autori}
+    \label{fig:num-authors-per-country}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{num_documents_per_country.png}
+    \caption{Numero di documenti}
+    \label{fig:num-documents-per-country}
+  \end{subfigure}
+  \caption{Primi 10 stati secondo varie metriche}
+  \label{fig:top-10-country}
 \end{figure}
 
 Non sorprendentemente, i dati raccolti confermano che gli attuali stati
@@ -205,26 +211,33 @@ di ricercatori e producono un maggiore numero di documenti.
 Interessante notare l'Italia che si pone come terza nazione europea per numero
 di autori, dietro a Germania e Regno Unito, in entrambi i casi.
 
-\subsection{Maggiori entità per $h$-index}
+\subsection{Maggiori entità per produttività}
 
-In questa sezione si vuole guardare a come l'$h$-index degli autori potrebbe
-essere influenzato dalla loro affiliazione e, più in generale, dallo stato in
-cui si trovano. La motivazione di tale analisi sta nel vedere se davvero
-un paese che ha a disposizione un parco maggiore di autori investe ugualmente
-nella qualità della ricerca e se, in generale, la produttività di un ricercatore
-può essere legata alla sua locazione geografica.
+In genere guardare al solo numero assoluto di autori o documenti di un certo
+stato è sì interessante, ma lontano dal quadro completo. Per questo si è
+deciso di introdurre un'ulteriore metrica, qui chiamata \textit{produttività},
+definita semplicemente come il rapporto fra il numero di documenti ed il
+numero di autori. In tal modo, un valore alto di produttività indica uno
+stato in cui i ricercatori producono in media più lavori rispetto ad un
+altro. Nella Figura~\ref{fig:productivity-per-country} vengono quindi mostrati i valori
+di produttività calcolati sugli stati con maggiore numero di autori e di
+documenti, ovvero gli stati visibili in Figura~\ref{fig:top-10-country} alla
+Sezione~\ref{ssec:authors-docs-per-country}.
 
-In particolare, visto che in uno stato possono essere presenti varie università
-e centri di ricerca, l'$h$-index medio per uno stato viene calcolato in modo
-pesato come esemplificato dalla seguente equazione:
-\begin{equation*}
-h_s = \frac{\sum_{a\in A_s} n_a h_a}{\sum_{a\in A_s} n_a}
-\end{equation*}
-Dove $A_s$ rappresenta l'elenco delle affiliazioni per un certo stato $s$,
-$n_a$ il numero di autori per un'affiliazione $a$ e $h_a$ l'$h$-index medio
-per l'affiliazione $a$.
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=\linewidth]{productivity_per_country.png}
+  \caption{Produttività per le maggiori nazioni}
+  \label{fig:productivity-per-country}
+\end{figure}
 
-\subsection{Numero di documenti per numero di autori}
+Dalla figura compare uno scenario leggermente diverso: le maggiori nazioni
+per produttività non sono le maggiori per numero di documenti o autori, eccezion
+fatta per la Cina. La produttività maggiore va invece verso nazioni come Brasile
+e India, subito seguite da Francia e Germania.
+Di conseguenza, i paesi in cui i ricercatori producono più lavori in media
+sono i paesi cosiddetti ``emergenti''.
+\todo{Capire se questa frase è da sistemare}
 
 \section{Metriche sugli autori}
 
