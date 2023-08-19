@@ -228,8 +228,6 @@ Conferences - Produzione Scientifica
 {% block content %}
 <h1>List of Conferences</h1>
 
-<img src="{% url 'conferences_distribution.png' %}" />
-
 <table>
   <thead>
     <tr>
@@ -242,7 +240,7 @@ Conferences - Produzione Scientifica
     {% for conference in conferences %}
     <tr>
       <td>
-        <a href="">{{ conference.name }}</a>
+      <a href="{% url 'conference_info' conference.id %}">{{ conference.name }}</a>
       </td>
       <td>{{ conference.acronym }}</td>
       <td>{{ conference.ggs_rating }}</td>
@@ -465,7 +463,10 @@ Come visibile dal codice, in Django si utilizza il tag \texttt{\{\% block \%\}} 
   \item \texttt{\{\% block content \%}\}: per il contenuto della pagina.
 \end{itemize}
 
-Nella Figura \ref{fig:homepage} è mostrata l'hompage del sito che contiene ... 
+Nella Figura~\ref{fig:homepage} è mostrata l'hompage del sito che contiene una panoramica generale dell'applicazione e di ciò che consente di visualizzare.
+
+Nella barra di sinistra è possibile andare a visitare le pagine che mostrano più nel dettaglio i dati riguardanti conferenze, autori e affiliazioni. Queste verranno descritte più approfonditamente nelle sezioni successive.
+
 \todo{Descrivere cosa si visualizza nella prima pagina}
 
 \begin{figure}
@@ -476,11 +477,61 @@ Nella Figura \ref{fig:homepage} è mostrata l'hompage del sito che contiene ...
 \end{figure}
 
 \subsection{Conferenze}
+In questa pagina sono visibili tutte le informazioni relative alle conferenze.
+
+È possibile consultare l'elenco delle conferenze con il rispettivo acronimo e rating, come visibile in Figura~\ref{fig:list-conferences}. Nel Listing~\ref{lst:django-template} è mostrato il codice per la visualizzazione della tabella delle conferenze.
+
+Per ogni conferenza vi è poi un collegamento alla pagina dedicata che contiene le informazioni della conferenza, come visibile in Figura~\ref{fig:info-conference}.
+
+\todo{Descrivere un po' l'immagine (quando ci sarà)}
+
+Infine sono presenti le immagini ricavate dalle analisi fatte sui dati, con la spiegazione delle singole metriche.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{listConferences.png}
+  \caption{Pagina per la visualizzazione della lista delle conferenze}
+  \label{fig:list-conferences}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{conference_info.png}
+  \caption{Pagina per la visualizzazione delle informazioni di una singola conferenza}
+  \label{fig:info-conference}
+\end{figure}
+
+
 
 \subsection{Autori}
+Nella pagina sono disponibili le informazioni relative agli autori e le metriche che sono state analizzate.
 
-\subsection{Università}
+Come fatto per le conferenze, anche per gli autori è disponibile una lista che mostra l'id dell'autore e il nome, come visibile in Figura~\ref{lista-autori}.
 
+Per ogni autore poi è possibile visualizzare i suoi dati, come il numero di citazioni e l'$h$-index. Inoltre viene mostrata anche la distribuzione delle conferenze a cui ha partecipato, calcolata come visibile nel Listing~\ref{lst:distribuzione-autore}.
+
+\begin{lstlisting}[language=html, caption=Estratto di \texttt{template/author\_info.html per la visualizzazione della distribuzione delle conferenze a cui l'autore partecipa}, label=lst:distribuzione-autore]
+  <h2> Distribuzione conferenze </h2>
+  <ul>
+  {% for rating, count in num_confs.items %}
+  <li>{{ rating }}: {{ count }}</li>
+  {% endfor %}
+  </ul>  
+
+\end{lstlisting}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{author_list.png}
+  \caption{Pagina per la visualizzazione della lista di autori}
+  \label{fig:lista-autori}
+\end{figure}
+
+
+
+\subsection{Affiliazioni}
+
+%%Affiliation lista
 \begin{lstlisting}[language=html, caption=Estratto di \texttt{template/affiliation.html}, label=lst:affiliation_html]
 {% extends "base.html" %}
 
