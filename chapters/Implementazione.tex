@@ -6,7 +6,7 @@
 % \todo{Una descrizione del progetto, con la separazione in fasi}
 Il progetto si pone l'obiettivo di raccogliere una quantità rappresentativa
 di paper, autori e conferenze degli ultimi anni al fine di derivare alcune
-correlazioni fra le principali metriche, quali l'H-index, la qualità delle
+correlazioni fra le principali metriche, quali l'$h$-index, la qualità delle
 conferenze ed il numero delle citazioni.
 
 Il lavoro si suddivide principalmente nelle seguenti fasi:
@@ -17,15 +17,15 @@ Il lavoro si suddivide principalmente nelle seguenti fasi:
   \item Sviluppo di un'applicazione web in Django per la visualizzazione delle varie metriche.
 \end{enumerate}
 
-Oltre agli indici direttamente disponibili (e.g., H-index, citazioni, qualità
+Oltre agli indici direttamente disponibili (e.g., $h$-index, citazioni, qualità
 delle conferenze), sono state derivate alcune metriche per via campionaria.
 Tra le principali analizzate vi sono:
 \begin{itemize}
   \item La distribuzione della qualità delle conferenze analizzate;
-  \item La distribuzione degli H-index degli autori;
+  \item La distribuzione degli $h$-index degli autori;
   \item La distribuzione della qualità dei lavori per un certo autore;
   \item La correlazione tra qualità delle conferenze e distribuzione del numero delle citazioni dei paper;
-  \item La correlazione tra la qualità di una conferenza e la distribuzione degli H-index degli autori coinvolti.
+  \item La correlazione tra la qualità di una conferenza e la distribuzione degli $h$-index degli autori coinvolti.
 \end{itemize}
 \todo{Vedere di aggiungerne altre}
 
@@ -50,7 +50,7 @@ accademiche indicizzate da Scopus.
 Sono disponibili due modi di utilizzo delle API di Scopus: commerciale e
 non commerciale. Per questa tesi sono state utilizzate le API a uso non
 commerciale, disponibili gratuitamente per lavori senza scopo di lucro.
-Utilizzando le API di Scopus si ha accesso diretto ai dati di Scopus in tempo
+Utilizzando le API di Scopus si ha accesso diretto ai dati in tempo
 reale. Le \textit{API responses} includono link a risorse collegate, rendendo
 la navigazione più semplice e la documentazione consente di visualizzare in
 anteprima la richiesta e la risposta della API in modo interattivo. Inoltre
@@ -266,7 +266,7 @@ definiti ed inoltra la richiesta, trasformata in un oggetto Python, alla
 \textit{view} che si occupa della sua gestione.
 Tale view può eseguire qualsiasi azione desiderata, come aggiorare il database o
 leggere dati, anche differenziando in base al metodo HTTP usato dalla richiesta.
-Una volta terminato però il lavoro necessario, la view è costretta a ritornare
+Una volta terminato il lavoro necessario, però, la view è costretta a ritornare
 una risposta al client, sia essa positiva o negativa, che la mostrerà all'utente
 tramite un browser o qualsiasi altro tool usato.
 
@@ -283,7 +283,7 @@ Per il download dei dati da Scopus, si è usato \texttt{pybliometrics}
 al download di grandi quantità di dati in modo automatico facendo uso delle
 API fornite da Scopus.
 
-Per quanto riguarda le conferenze, invece, i nomi delle conferenze forniti da
+Per quanto riguarda le conferenze, invece, i nomi forniti da
 GGS non concordano in pieno con quelli presenti su Scopus. A questo fine,
 si è manualmente proceduto all'analisi delle conferenze ottenute ed al loro
 inserimento all'interno del database del progetto.
@@ -293,11 +293,11 @@ La priorità è stata comunque data agli acronimi rispetto ai nomi interi.
 
 \subsection{Distanza di Levenshtein}
 
-L'algoritmo di Levenshtein, introdotta per la prima volta nel
+L'algoritmo di Levenshtein, introdotto per la prima volta nel
 1965~\cite{levenshtein1966} calcola la somiglianza tra due stringhe diverse.
 Date due stringhe $a$ e $b$, l'algoritmo misura il numero di modifiche
 elementari necessarie per trasformare la stringa $a$ nella stringa $b$.
-Tra le operazioni elementari si hanno eliminazione di un carattere,
+Tra le operazioni elementari si hanno: eliminazione di un carattere,
 sostituzione di un carattere con un altro, inserimento di un nuovo carattere.
 Più precisamente, definite $a$ e $b$ due stringhe, $|a|$ la lunghezza di una
 stringa, la distanza di Levenshtein è definita come
@@ -403,7 +403,7 @@ Un paper viene rappresentato dai seguenti dati:
 \section{Applicazione web}
 
 L'applicazione web realizzata in questo progetto di tesi offre la funzionalità
-di accesso semplificato ai dati ottenuti e, più importantemente, di visualizzazione
+di accesso semplificato ai dati ottenuti e la visualizzazione
 delle varie analisi metriche ottenute.
 
 \subsection{Struttura dei file}
