@@ -68,18 +68,26 @@ anche in Tabella~\ref{table:paper-rating-distribution}.
   \label{fig:paper-rating-distribution}
 \end{figure}
 
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=\linewidth]{paper_rating_distribution_impact.png}
+  \caption{Numero di citazioni di paper di impatto per conferenza}
+  \label{fig:paper-rating-distribution-impact}
+\end{figure}
+
 \begin{table}[tb]
   \centering
-  \begin{tabular}{||l | r ||}
+  \begin{tabular}{||l | r | r ||}
     \hline
-    \textbf{Rating conferenza} & \textbf{Numero di citazioni medio} \\ [0.5ex] 
+    \multirow{2}{*}{\textbf{Rating}} & \multicolumn{2}{| c ||}{\textbf{Numero di citazioni medio}} \\ \cline{2-3}
+     & \textbf{Tutti i paper} & \textbf{Paper di impatto} \\ [0.5ex] 
     \hline\hline
-    A++    & 1.075884 \\ \hline
-    A+     & 1.422904 \\ \hline
-    A      & 1.541459 \\ \hline
-    A-     & 2.191858 \\ \hline
-    B      & 1.384308 \\ \hline
-    B-     & 1.795274 \\ \hline
+    A++    & 1.08 & 72.25 \\ \hline
+    A+     & 1.42 & 45.50 \\ \hline
+    A      & 1.54 & 61.71 \\ \hline
+    A-     & 2.19 & 67.48 \\ \hline
+    B      & 1.38 & 78.32 \\ \hline
+    B-     & 1.80 & 80.41 \\ \hline
   \end{tabular}
   \caption{Numero di citazioni medio per rating}
   \label{table:paper-rating-distribution}
@@ -91,7 +99,7 @@ Dall'immagine è possibile trarre due conclusioni importanti:
         periodo di qualche anno che è stato considerato;
   \item La seconda, invece, è che la distribuzione delle citazioni è molto sbilanciata,
         in quanto ci sono molti paper con poche citazioni e pochi paper che superano
-        le 50 citazioni.
+        le 40 citazioni.
 \end{enumerate}
 
 Queste due conclusioni valgono inoltre per qualsiasi ranking di conferenza,
@@ -100,6 +108,19 @@ Si può quindi dedurre che, in genere, il livello di una conferenza non influenz
 il numero di citazioni ottenute nel breve periodo, con anzi
 un aumento delle citazioni in media per conferenze non top, ovvero con ranking
 da A in giù.
+
+Può essere interessante inoltre guardare ai paper che possiamo definire come
+``d'impatto'', ovvero i pochi paper che superano le 40 citazioni identificati
+dalle conclusioni precedenti. Tale distribuzione è visibile in
+Figura~\ref{fig:paper-rating-distribution-impact} e, similmente a prima,
+è possibile vedere i numeri precisi in
+Tabella~\ref{table:paper-rating-distribution}.
+Guardando il grafico, è possibile notare che i paper con citazioni più alte
+si trovano sulle conferenze di rating più basso, ma questi risultano essere più
+valori rari che si discostano molto dalla media. Sulle conferenze di livello
+più alto, invece, la distribuzione è molto meno sbilanciata: i paper sono più
+concentrati sotto le 150 citazioni, ma in genere la distribuzione di citazioni
+è più equa. Questo si vede chiaramente per le conferenze A++.
 
 \subsection{Media dell'$h$-index per conferenza in base al rating}
 
