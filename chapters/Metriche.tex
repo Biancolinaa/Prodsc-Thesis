@@ -261,6 +261,101 @@ sono i paesi cosiddetti ``emergenti''.
 
 \section{Metriche sugli autori}
 
+In questa sezione ci si vuole concentrare maggiormente su come metriche e
+indici relativi ai singoli autori dipendono da altri fattori, quali la
+dimensione dell'affiliazione con cui pubblicano.
+
+In particolare, sono state prese in considerazione metriche \textit{aggregate},
+in quanto possono dare una visione d'insieme su quello che sarebbe un numero
+troppo elevato di autore da poter analizzare singolarmente.
+
+\subsection{Correlazione fra numero di citazioni e dimensione dell'affiliazione}
+\label{ssec:correlazione-citazioni-dimensione-affiliazione}
+
+Con questa analisi si guarda ad una possibile correlazione fra il numero di
+citazioni totale di un autore e la dimensione della sua affiliazione, in
+quanto a numero di autori.
+Così facendo, è possibile capire se un'università con molto personale
+può risultare vantaggiosa quando si tratta di far conoscere i lavori pubblicati
+da un ricercatore, senza però far variare necessariamente l'$h$-index (questo
+sarà guardato in Sezione~\ref{ssec:correlazione-h-index-dimensione-affiliazione}).
+È sì possibile che in generale un numero alto di citazioni può portare anche ad
+un elevato $h$-index, ma non è necessariamente sempre vero: con questa analisi
+si vuole capire semplicemente quanto i lavori di un certo autore sono conosciuti,
+senza guardare forzatamente a quanto tale autore è considerato buono o meno
+dal punto di vista dell'$h$-index.
+
+Al fine di evitare una quantità troppo elevata di informazioni, le affiliazioni
+sono state divise in vari \textit{bucket} rispetto alla loro dimensione, che
+di specifico sono:
+\begin{itemize}
+  \item Affiliazioni molto piccole (meno di 10 autori) e piccole (fra 10 e
+        100 autori) che possono rappresentare, per esempio, centri di ricerca
+        aziendali o molto specifici;
+  \item Affiliazioni di buona dimensione, fra 100 e 1000 autori, in cui
+        ricadono molte università;
+  \item Affiliazioni grandi, fra 1000 e 10000 autori;
+  \item Affiliazioni molto grandi, oltre i 10000 autori.
+\end{itemize}
+%
+Inoltre, sempre per poter rappresentare graficamente al meglio informazioni
+utili, sono stati esclusi gli \textit{outlier} da tale distribuzione, in quanto
+sono pochissimi casi con valori molto alti che non contribuiscono molto però
+alla distribuzione nel suo insieme.
+
+\begin{figure}[tb]
+  \includegraphics[width=\linewidth]{author_citations_vs_affiliation_size}
+  \caption{Relazione fra citazioni e dimensione dell'affiliazione}
+  \label{fig:author-citations-vs-affiliation-size}
+\end{figure}
+
+Come si può vedere dalla Figura~\ref{fig:author-citations-vs-affiliation-size},
+per le affiliazioni con dimensioni sotto i 10000 autori non c'è molta differenza,
+sebbene si ha una leggera crescita delle code della distribuzione con la crescita
+della dimensione dell'affiliazione.
+La differenza sostanziale si vede quando l'affiliazione supera i 10000 autori:
+in tal caso, sia la maggior parte degli autori sia la coda della distribuzione
+ricevon più citazioni in media di ricercatori affiliati ad entità di dimensioni
+inferiori.
+Di conseguenza, si può dedurre che la dimensione dell'affiliazione con cui
+si decide di pubblicare conta solo se essa è molto grande, ma in modo comunque
+non eccessivo, visto che la media (rappresentata dalla riga orizzontale
+arancione) rimane paragonabile in tutti i casi.
+
+\subsection{Correlazione fra $h$-index e dimensione dell'affiliazione}
+\label{ssec:correlazione-h-index-dimensione-affiliazione}
+
+Similmente alla Sezione~\ref{ssec:correlazione-citazioni-dimensione-affiliazione},
+in questa sezione si vuole guardare invece ad una possibile correlazione fra la
+dimensione dell'affiliazione di un autore e il valore del suo $h$-index.
+A differenza del puro numero di citazioni, l'$h$-index dipende anche dalla
+quantità di paper scritti da un certo autore, e quindi non è semplicemente una
+misura della ``popolarità'' del suo lavoro di ricerca, ma è più vicina ad una
+misura pesata fra quantità e qualità dei lavori.
+
+Per questa analisi valgono le stesse considerazioni esposte in
+Sezione~\ref{ssec:correlazione-citazioni-dimensione-affiliazione}: le affiliazioni
+sono state separate in vari gruppi in base al numero di autori (meno di 10, fra
+10 e 100, fra 100 e 1000, fra 1000 e 10000, e più di 10000), ed anche per questa
+analisi non sono rappresentati gli \textit{outlier}.
+
+\begin{figure}[tb]
+  \includegraphics[width=\linewidth]{author_h_index_vs_affiliation_size}
+  \caption{Relazione fra $h$-index e dimensione dell'affiliazione}
+  \label{fig:author-h-index-vs-affiliation-size}
+\end{figure}
+
+I risultati visibili in Figura~\ref{fig:author-h-index-vs-affiliation-size}
+sono paragonabili, in quanto a forma, a quelli visti in
+Sezione~\ref{ssec:correlazione-citazioni-dimensione-affiliazione},
+Figura~\ref{fig:author-citations-vs-affiliation-size}.
+Per le affiliazioni di dimensioni non considerevoli (i.e., sotto i 10000 autori)
+non c'è molta differenza per quanto riguarda l'$h$-index, mentre per le entità
+molto grosse allora la distribuzione si sposta di più verso valori alti di
+$h$-index, soprattutto per quanto riguarda le code della distribuzione.
+Similmente a prima, la media resta paragonabile, anche se con leggera crescita
+in base alla dimensione dell'affiliazione.
+
 % \chapter{Metriche}
 %In questo capitolo verranno descritte le metriche anticipate nella Sezione \ref{descrizione_progetto}, mostrando il relativo codice e i risultati ottenuti.
 
