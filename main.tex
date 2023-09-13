@@ -1,5 +1,8 @@
 \documentclass[italian,master]{unibg}
 
+\usepackage{biblatex}
+\addbibresource{bibliography.bib}
+
 \usepackage{color}
 \usepackage{amsmath}
 \usepackage{titlesec}
@@ -67,7 +70,7 @@
 \input{pages/abstract.tex}
 \emptypage
 \toc[figures,tables,listings]
-% \emptypage
+\emptypage
 
 \clearpage
 \pagenumbering{arabic}
@@ -77,9 +80,9 @@
 \input{chapters/Metriche.tex}
 \input{chapters/Conclusioni.tex}
 
-\input{chapters/Ringraziamenti.tex}
-
 \nocite{*}
 \printbibliography[heading=bibintoc]
+
+\input{chapters/Ringraziamenti.tex}
 
 \end{document}
