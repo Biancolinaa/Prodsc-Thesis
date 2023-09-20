@@ -25,9 +25,10 @@ Tra le principali analizzate vi sono:
   \item La distribuzione degli $h$-index degli autori;
   \item La distribuzione della qualità dei lavori per un certo autore;
   \item La correlazione tra qualità delle conferenze e distribuzione del numero delle citazioni dei paper;
-  \item La correlazione tra la qualità di una conferenza e la distribuzione degli $h$-index degli autori coinvolti.
+  \item La correlazione tra la qualità di una conferenza e la distribuzione degli $h$-index degli autori coinvolti;
+  \item La correlazione tra stato di appartenenza e paper di un autore;
+  \item La correlazione fra il numero di citazioni o l'$h$-index e dimensione dell'affiliazione.
 \end{itemize}
-\todo{Vedere di aggiungerne altre}
 
 %%%% STRUMENTI %%%%%
 \section{Strumenti}
@@ -159,7 +160,7 @@ con l'utente, che sono:
 \begin{itemize}
 	\item \textit{Model}, la descrizione dei dati tramite una classe Python;
 	\item \textit{View}, un sistema che processa le richieste degli utenti e
-	definisce che dati devono essere presentati in risposta;
+	definisce quali dati devono essere presentati in risposta;
 	\item \textit{Template}, un template HTML con un proprio linguaggio di templating
 	chiamato DTL (Django Template Language) che definisce la rappresentazione
 	grafica dei dati.
@@ -496,7 +497,7 @@ Nella Figura~\ref{fig:homepage} è mostrata l'hompage del sito che contiene una 
 
 Nella barra di sinistra è possibile andare a visitare le pagine che mostrano più nel dettaglio i dati riguardanti conferenze, autori e affiliazioni. Queste verranno descritte più approfonditamente nelle sezioni successive.
 
-Nella dashboard vengono mostrati i quattro principali grafici estrapolati dall'analisi dei dati: i grafici posti in alto alla pagina mostrano la distribuzione delle conferenze in base al reting e degli $h$-index dei paper; i grafici posti in basso invece mostrano la produttività per nazione in base all'affiliazione e gli $h$-index degli autori per dimensione dell'affiliazione.
+Nella dashboard vengono mostrati i quattro principali grafici estrapolati dall'analisi dei dati: i grafici posti in alto alla pagina mostrano la distribuzione delle conferenze in base al rating e degli $h$-index dei paper; i grafici posti in basso invece mostrano la produttività per nazione in base all'affiliazione e gli $h$-index degli autori per dimensione dell'affiliazione.
 
 \begin{figure}
   \centering
@@ -537,7 +538,7 @@ Inoltre, nella stessa pagina, è possibile consultare l'elenco delle conferenze 
 \subsection{Autori}
 Nella pagina sono disponibili le informazioni relative agli autori e le metriche che sono state analizzate.
 
-Come fatto per le conferenze, anche per gli autori sono disponibili i grafici delle metriche che li riguardano e una lista che mostra l'id dell'autore e il nome, come visibile in Figura~\ref{lista-autori}. I grafici consultabili sono:
+Come fatto per le conferenze, anche per gli autori sono disponibili i grafici delle metriche che li riguardano e una lista che mostra l'id dell'autore e il nome, come visibile in Figura~\ref{fig:lista-autori}. I grafici consultabili sono:
 \begin{itemize}
   \item Numero di citazioni dell'autore in base alla grandezza delle affiliazioni;
   \item $H$-index dell'autore per grandezza dell'affiliazione.
@@ -545,7 +546,7 @@ Come fatto per le conferenze, anche per gli autori sono disponibili i grafici de
 
 Per ogni autore poi è possibile visualizzare i suoi dati, come il numero di citazioni e l'$h$-index. Inoltre viene mostrata anche la distribuzione delle conferenze a cui ha partecipato, calcolata come visibile nel Listing~\ref{lst:distribuzione-autore}.
 
-\begin{lstlisting}[language=html, caption=Estratto di \texttt{template/author\_info.html per la visualizzazione della distribuzione delle conferenze a cui l'autore partecipa}, label=lst:distribuzione-autore]
+\begin{lstlisting}[language=html, caption=Estratto di \texttt{template/author\_info.html} per la visualizzazione della distribuzione delle conferenze a cui l'autore partecipa, label=lst:distribuzione-autore]
   <h2> Distribuzione conferenze </h2>
   <ul>
   {% for rating, count in num_confs.items %}
