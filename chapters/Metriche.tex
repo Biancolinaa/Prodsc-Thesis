@@ -257,7 +257,7 @@ fatta per la Cina. La produttività maggiore va invece verso nazioni come Brasil
 e India, subito seguite da Francia e Germania.
 Di conseguenza, i paesi in cui i ricercatori producono più lavori in media
 sono i paesi cosiddetti ``emergenti''.
-\todo{Capire se questa frase è da sistemare}
+
 
 \section{Metriche sugli autori}
 
@@ -359,7 +359,9 @@ in base alla dimensione dell'affiliazione.
 
 %%metriche su principali conferenze
 \section{Metriche sulle principali conferenze}
-In aggiunta alle metriche presentate finora, si è voluto fare un confronto più ristretto, concentrando le analisi sulle principali quattro conferenze che riguardano la sicurezza informatica: CCS, S\&P, Usenix e NDSS.
+In aggiunta alle metriche presentate finora, si è voluto fare un confronto più ristretto, concentrando le analisi sulle principali conferenze che riguardano la sicurezza informatica.
+
+Tali conferenze sono di norma considerate essere CCS, S\&P, USENIX e NDSS. Di queste, nelle analisi sono state considerate solo le prime due in quanto quelle con il maggior numero di dati presenti su Scopus. Inoltre, è dovere delle conferenze inviare i propri \textit{proceedings} a Scopus e non tutte decidono di condividere i propri dati.
 
 La \textit{ACM Conference on Computer and Communications Security}, CCS, è una conferenza che si tiene annualmente dal 1993 e che interessa ricercatori e professionisti che si occupano di sicurezza informatica. È la conferenza di maggior rilievo del SIGSAC (\textit{Special Interest Group on Security, Audit and Control}), la cui missione è quella di sviluppare sempre di più la sicurezza informatica, sponsorizzando conferenze di alta qualità in cui vengono affrontati aspetti riguaranti applicazioni sicure, crittografia, autenticazione, controllo degli accessi, analisi dei rischi e, in generale, tutto ciò che riguarda i sistemi sicuri. Inoltre si analizza la sicurezza nei database, nelle reti e nei sistemi operativi, considderando anche tutte le aree di applicazione che, per esempio, possono essere: la protezione della proprietà intellettuale, la moneta e il commercio elettronico, i sistemi di telecomunicazione. 
 
@@ -369,4 +371,13 @@ USENIX è un'orgnizzazione no-profit che dal 1975 sostiene e promuove la ricerca
 
 Anche il simposio NDSS (\textit{Network and Distributed System Security}) si occupa, dal 1993, dell'interazione e lo scambio di informazioni sulla sicurezza informatica, concentrandosi prevalentemente su progettazione e implementazione dei sistemi distribuiti. Ogni simposio mette a disposizione indicativamente 120 posti per presentare il proprio progetto di ricerca. Al fine di rendere fruibili le informazioni, i documenti accettati vengono poi messi a disposizione in modo gratuito al termine dell'evento.
 
-\subsection{Confronto tra $h$-index}
+\subsection{Distribuzione dell'$h$-index per conferenza}
+
+Confrontando il grafico mostrato in Figura~\ref{fig:h_index_vs_top_conferences} con quello mostrato in Figura~\ref{fig:h-index-vs-rating} si nota che gli $h$-index più bassi dominano rispetto agli altri in entrambi i casi. La differenza è visibile nella presenza maggiore di $h$-index più alti, in particolare attorno a 40.
+Questo è atteso in quanto è ragionevole supporre che ricercatori con un profilo di maggior livello, e quindi $h$-index più alto, tendano a sottomettere i loro lavori a conferenze considerate le migliori nel loro campo.
+
+\begin{figure}[tb]
+  \includegraphics[width=\linewidth]{h_index_vs_top_conferences}
+  \caption{Distribuzione di $h$-index per conferenze top}
+  \label{fig:h_index_vs_top_conferences}
+\end{figure}
